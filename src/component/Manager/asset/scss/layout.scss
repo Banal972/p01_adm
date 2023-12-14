@@ -1,0 +1,85 @@
+// 헤더
+.manager-header {
+
+    height: 70px; display: flex; align-items: center; padding: 0 25px; box-sizing: border-box; border-bottom: 1px solid #E1F2F1;
+
+    .gnb {
+        display: flex; margin-left: auto; align-items: center;
+
+        .alr {
+            font-size: 24px; position: relative;
+            .count {
+                position: absolute; right: 0; top: 0; width: 12px; height: 12px; background: #FF5151; border-radius: 1000px; font-size: 8px; font-weight: bold; color: #fff; display: flex; align-items: center; justify-content: center;
+            }
+        }
+
+        .user-box{
+
+            display: flex; align-items: center;
+
+            .user-icon {
+                width: 30px; height: 30px; border-radius: 1000px; background: #D9D9D9; margin-left: 25px;
+            }
+
+            .user {
+                margin-left: 7px; display: flex; align-items: center;
+                .down {
+                    margin-left: 7px;
+                    svg {
+                        vertical-align: middle;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+}
+
+// 푸터
+.manager-footer {
+
+    height: 40px; background: #002D46; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 12px;
+
+}
+
+// 메뉴
+.manager-menu {
+
+    width: 175px; height: 100%; box-sizing: border-box; font-size: 14px; flex: 0 0 auto;
+
+    .gnb {
+        > li {
+            padding: 10px 25px; border-top: 1px solid #EEF4F4;
+            a {
+                display: flex; align-items: center;
+                &.act {
+                    color: #16A4AD;
+                }
+                .icon {
+                    margin-right: 5px; font-size: 18px;
+                    svg {
+                        vertical-align: middle;
+                    }
+                }
+            }
+        }
+
+
+        .snb {
+            li {
+                padding: 10px;
+                + li {
+                    border-top: 1px solid #EEF4F4;
+                }
+                &:nth-of-type(1) {
+                    padding-top: 20px;
+                }
+            }
+        }
+
+    }
+
+}

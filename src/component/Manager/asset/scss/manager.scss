@@ -1,0 +1,523 @@
+@mixin max($width){
+
+    @media screen and (max-width : #{$width}px ) {
+        @content;    
+    }
+
+}
+
+// 로그인 페이지
+.manager-login{
+
+    height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center;
+
+    form {
+        width: 250px; background: #eee; padding: 80px 25px; border-radius: 25px;
+    }
+
+    .logo {
+        text-align: center;
+    }
+
+    .it {
+        margin-top: 10px;
+        input {
+            width: 250px; height: 35px; padding: 0 1em; box-sizing: border-box; border: 1px solid #ddd; border-radius: 5px; 
+        }
+    }
+
+    button {
+        width: 100%; height: 35px; background: #64b5d5; border-radius: 100px; color: #fff; margin-top: 10px;
+    }
+
+    .check {
+        cursor: pointer; display: inline-flex; align-items: center; margin-top: 10px; font-size: 12px;
+    
+        input {
+            display: none;
+    
+            &[checked] + div{
+                svg {
+                    display: block;
+                }
+            }
+    
+        }
+        div {
+            width: 15px; height: 15px; border: 1px solid #CEEAEA; margin: 0 auto; border-radius: 0; margin-right: 5px; background: #fff;
+            svg {
+                display: none;
+            }
+        }
+    }
+
+}
+
+// 작업 페이지
+.manger-main {
+
+    display: flex;
+
+    .back-box {
+        flex: 1; background: #EEF4F4; box-sizing: border-box; padding: 25px; min-width: 0;
+
+        >.layout ~ .layout {
+            margin-top: 25px;
+        }
+
+    }
+
+    // 대쉬보드
+    .dashboard {
+
+        .fl {
+            display: flex; width: 100%;
+        }
+
+        .tit {
+            margin-bottom: 15px; font-size: 14px; font-weight: 400;
+        }
+
+        .lbx {
+
+            flex: 1; min-width: 0;
+
+            > div ~ div {
+                margin-top: 25px;
+            }
+
+        }
+
+        .grid {
+            display: grid; gap: 25px;
+            &.col-3 {
+                grid-template-columns: repeat(3,1fr);
+            }
+        }
+        
+        .widget {
+            background-color: rgba($color: #32B4B4, $alpha: 0.17); margin-left: 50px; border-radius: 20px; box-sizing: border-box; padding: 20px; flex: 0.3;
+
+            > div ~ div {
+                margin-top: 25px;
+            }
+
+        }
+
+        // 대쉬보드 테이블
+        .dash-t {
+
+            .new {
+                li {
+                    display: flex; align-items: center;
+                    .new {
+                        background: #8A96FF; border-radius: 1000px; font-size: 12px; font-weight: 500; width: 60/12*1em; height: 20/12*1em; display: flex; align-items: center; justify-content: center; color: #fff;
+                    }
+                    p {
+                        margin-left: 5px; font-size: 16px; font-weight: bold;
+                    }
+                }
+            }
+
+            .table {
+                margin-top: 15px;
+                li {
+                    display: flex; align-items: center;
+                    + li {
+                        margin-top: 10px;
+                    }
+                    &::before {
+                        width: 3px; height: 3px; border-radius: 100px; background: #000; display: block; content: ''; margin-right: 5px;
+                    }
+                    .write {
+                        margin-right: 10px;
+                    }
+                    .write,desc {
+                        font-weight: bold;
+                    }
+                    .date {
+                        margin-left: auto; font-size: 12px; font-weight: 300; opacity: 0.5;
+                    }
+                }
+            }
+
+        }
+
+        @include max(1280){
+
+
+
+        }
+
+    }
+    
+
+
+    // 기본 레이아웃
+    .layout {
+
+        background: #fff; border-radius: 7.5px; width: 100%; box-sizing: border-box; padding: 45px 50px; font-size: 14px;
+
+        &.top {
+            display: flex; align-items: center; margin-bottom: 25px;
+            > * + * {
+                margin-left: 15px;
+            }
+        }
+
+        .input-checkbox {
+
+            > p {
+                margin-bottom: 20px;
+            }
+
+            label + label {
+                margin-left: 25px;
+            }
+
+        }
+
+        .table-check {
+            cursor: pointer; display: inline-flex; align-items: center;
+        
+            input {
+                display: none;
+
+                &[checked] + div,
+                &:checked + div{
+                    svg {
+                        display: block;
+                    }
+                }
+        
+            }
+            div {
+                width: 15px; height: 15px; border: 1px solid #CEEAEA; margin: 0 auto; border-radius: 0; margin-right: 5px;
+                svg {
+                    display: none;
+                }
+            }
+        }
+
+    }
+
+    
+    //버튼관련
+
+    // 버튼 리스트
+    .btn-list {
+        margin-top: 125px; display: flex; align-items: center;
+        button + button {
+            margin-left: 25px;
+        }
+    }
+
+    //기본 버튼
+    .btn-n {
+        font-size: 14px; font-weight: 500; width: 125px; height: 40px; border-radius: 10px; background: #CEEAEA; box-sizing: border-box; display: flex; align-items: center; justify-content: center; margin-left: auto; cursor: pointer;
+    }
+
+    // 버튼01
+    .btn01 {
+        font-size: 18px; font-weight: 500; width: 125px; height: 45px; border-radius: 10px; background: #CEEAEA; box-sizing: border-box; display: flex; align-items: center; justify-content: center; box-shadow: 1px 1px 4px rgba($color: #000000, $alpha: 0.25); margin-left: auto; cursor: pointer;
+
+        &.color01 {
+            background: #000; color: #fff;
+        }
+        &.color02 {
+            background: #FF5151; color: #fff;
+        }
+    }
+
+    // 추가버튼
+    .addBtn {
+        font-size: 18px; font-weight: 500; width: 250px; height: 45px; border-radius: 10px; background: #CEEAEA; box-sizing: border-box; display: flex; align-items: center; justify-content: center; box-shadow: 1px 1px 4px rgba($color: #000000, $alpha: 0.25); margin-left: auto; cursor: pointer;
+    }
+
+
+    // 게시판 위쪽
+
+    // 선택바
+    .lay-select {
+        display: inline-flex; align-items: center; border: 2px solid #EEF4F4; box-sizing: border-box; padding: 8px 10px; height: 40px; border-radius: 7.5px; font-size: 16px; font-weight: 500; flex: 0.2;
+    }
+
+    // 검색바
+    .lay-search {
+
+        display: flex; position: relative; border: 2px solid #EEF4F4; box-sizing: border-box; padding: 8px 10px; border-radius: 10px; flex: 1;
+        .icon {
+            font-size: 18px;
+            svg {
+                vertical-align: middle;
+            }
+        }
+        input {
+            font-size: 16px; font-weight: 500; width: 100%; margin-left: 5px; border: 0; font-family: "Pretendard"; font-weight: 300;
+            &::placeholder {
+                color: #C8C8C8;
+            }
+        }
+    
+    }
+
+    // 인풋관련
+    .input-box {
+        ~ div {
+            margin-top: 25px;
+        }
+        
+        span {
+            color: #FF5151; font-size: 12px; margin-left: 0.5em;
+        }
+        
+        input {
+            display: block; height: 40px; width: 100%; border: 2px solid #EEF4F4; box-sizing: border-box; padding: 0 1em; font-size: 16px; border-radius: 10px; margin-top: 10px; font-size: 14px;
+            &:disabled {
+                background: #eee;
+            }
+        }
+    }
+
+    // 인풋 텍스트아레아
+    .input-textarea {
+
+        ~ div {
+            margin-top: 25px;
+        }
+
+        textarea { display: block; width: 100%; margin-top: 10px; border-radius: 10px; box-sizing: border-box; padding: 1em; font-size: 14px; border: 2px solid #EEF4F4; outline: 0; font-family: "Pretendard"; }
+
+    }
+
+    // 인풋 셀렉트
+    .input-select {
+        ~ div {
+            margin-top: 25px;
+        }
+        select {
+            display: block; height: 40px; width: 180px; border: 2px solid #EEF4F4; box-sizing: border-box; padding: 0 1em; font-size: 16px; border-radius: 10px; margin-top: 10px;
+        }
+    }
+
+    // 인풋 체크박스
+    .input-checkbox {
+        p {
+            margin-bottom: 25px;
+        }
+        label + label {
+            margin-left: 15px;
+        }
+        .table-check {
+            display: inline-block; font-size: 14px;
+
+            div {
+                margin: 0; display: inline-block; vertical-align: middle; margin-right: 5px;
+            }
+        }
+    }
+
+
+    // 인풋 파일
+    .input-file {
+        label {
+            width: 200px; height: 45px; background: #16A4AD; display: flex; align-items: center; justify-content: center; margin-top: 10px; border-radius: 5px; color: #fff; font-size: 14px; cursor: pointer;
+            svg {
+                margin-left: 5px;
+            }
+        }
+        input {
+            position: absolute; width: 0; visibility: hidden;
+        }
+
+        + img {
+            margin-top: 5px;
+        }
+
+    }
+
+
+    // 인풋 날짜
+    .input-calender{
+
+        position: relative;
+
+        .cal-box {
+            position: relative;
+            display: block; height: 40px; width: 100%; max-width: 200px; border: 2px solid #EEF4F4; font-size: 16px; border-radius: 10px; margin-top: 10px; font-size: 14px; box-sizing: border-box;
+
+            input {
+                width: 85%; height: 100%; box-sizing: border-box; padding: 0 1em; border: 0; 
+            }
+
+            svg {
+                position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+            }
+
+        }
+
+    }
+
+
+
+
+
+    /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 테이블 관련 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+
+    // 테이블 레이아웃
+    .table-grid {
+        .col {
+            display: grid; text-align: center; border-top: 1px solid #EEF4F4; padding: 10px 0; font-size: 14px; font-weight: 500; align-items: center;
+            &:last-child {
+                border-bottom: 1px solid #EEF4F4;
+            }
+        }
+    }
+
+    .table-action {
+        display: flex; align-items: center; justify-content: center;
+        button {
+            width: 34px; height: 34px; display: flex; align-items: center; font-size: 14px; justify-content: center; border-radius: 5px; cursor: pointer;
+    
+            + button {
+                margin-left: 5px;
+            }
+    
+            &.update {
+                border: 1px solid #CEEAEA;
+            }
+            &.delete {
+                background: #F86666; color: #fff;
+            }
+        }
+    }
+
+    // 테이블 셀렉트버튼
+    .table-select {
+        border: 2px solid #EEF4F4; box-sizing: border-box; border-radius: 5px; padding: 0 10px; height: 30px;
+    }
+
+    // 셀렉트버튼
+    .input-select {
+        ~ div {
+            margin-top: 25px;
+        }
+        select {
+            display: block; height: 40px; width: 180px; border: 2px solid #EEF4F4; box-sizing: border-box; padding: 0 1em; font-size: 16px; border-radius: 10px; margin-top: 10px;
+        }
+    }
+
+
+    // 페이징
+    .paging {
+        display: flex; align-items: center; justify-content: center; margin-top: 50px;
+        
+        button{
+            font-size: 14px; border-radius: 5px; border: 1px solid #CEEAEA; box-sizing: border-box; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+
+            &.prev,
+            &.next {
+                button {font-size: 12px;}
+            }
+
+            + button {
+                margin-left: 10px;
+            }
+
+            &.act {
+                background: #CEEAEA; color: #fff;
+            }
+
+        }
+    }
+
+
+    //기본 버튼
+    .btn-n {
+        font-size: 14px; font-weight: 500; width: 125px; height: 40px; border-radius: 10px; background: #CEEAEA; box-sizing: border-box; display: flex; align-items: center; justify-content: center; margin-left: auto; cursor: pointer;
+    }
+
+
+    // 레이아웃-캘린더
+    .lay-cal {
+
+        display: flex; align-items: center;
+
+        .calBtn {
+        
+            position: relative; z-index: 2;
+        
+            > button {
+                display: inline-flex; align-items: center; border: 2px solid #EEF4F4; box-sizing: border-box; padding: 8px 10px; border-radius: 10px; font-size: 16px; font-weight: 500; cursor: pointer; height: 40px;
+            }
+        
+            .icon {
+                font-size: 22px; margin-left: 20px;
+                svg {
+                    vertical-align: top;
+                }
+            }
+        
+            .react-calendar {
+                position: absolute; left: 0; top: 100%; max-width: none;
+            }
+        
+        }
+    
+    }
+
+    // 로그페이지
+    ._log {
+
+        .flex {
+            display: flex; align-items: flex-start;
+    
+            .layout {
+                flex: 1;
+    
+                + .layout {
+                    margin-left: 25px; flex: 0.6;
+                }
+    
+            }
+    
+        }
+    
+        .pie {
+    
+            p {
+                text-align: center; margin-top: 25px;
+            }
+    
+            + .pie {
+                border-top: 1px solid #EEF4F4; box-sizing: border-box; margin-top: 25px; padding-top: 25px;
+            }
+    
+        }
+    
+    }
+
+
+
+
+    // 에디터
+
+    .editor-wrapper {
+
+        margin-top: 10px;
+
+    }
+
+    .editor-toolbar {
+
+        border: 2px solid #EEF4F4; box-sizing: border-box; border-radius: 10px;
+
+    }
+
+    .editor-class {
+
+        height: 250px !important; box-sizing: border-box; padding: 1em; border: 2px solid #EEF4F4; box-sizing: border-box; border-radius: 10px; margin-top: 10px;
+
+    }
+
+}

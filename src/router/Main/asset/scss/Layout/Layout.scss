@@ -1,0 +1,29 @@
+/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ Footer ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.footer {
+    background: #111; color: #fff; padding: 25px 2.5%; font-size: 12px; line-height: 1.25; word-break: keep-all; flex: 0 0 auto; position: relative; z-index: 5;
+
+    .top {
+        font-size: em(24,14);
+    }
+
+    .p {
+        margin-top: em(10,14);
+
+        span {
+            display: inline-flex; align-items: center; vertical-align: middle; color: slateblue;
+            svg {
+                margin-right: 5px;
+            }
+        }
+
+    }
+
+    .copy {
+        padding-top: 10px; margin-top: 10px; border-top: 1px solid #ffffff51;
+    }
+
+    @media screen and (max-width:480px) {
+        font-size: 12px;
+    }
+
+}
