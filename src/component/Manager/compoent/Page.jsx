@@ -1,64 +1,108 @@
-import React,{useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import {AiOutlineLeft,AiOutlineRight} from "react-icons/ai"
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
-function Page({page,totalPage,setpage}) {
+function Page({
+    data,
+    setChangeData
+}) {
 
-    const pageMove = (e)=>{
-        setpage(e);
-    };
+    const [searchParams, setSearchParams] = useSearchParams(); // 쿼리 스트링
 
-    const [startAmount,setStartAmount] = useState(0);
-    const [endAmount,setEndAmount] = useState(0);
+    const [currentPage,setCurrentPage] = useState(1); // 현재 페이지
 
-    const [count,setCount] = useState([]);
+    useEffect(()=>{
+        setCurrentPage(searchParams.get('page') || 1);
+    },[searchParams]);
+
+    // 네비게이터
+    const navigate = useNavigate();
+
+    const total = data.length; // 게시물 총 갯수
+    const limit = 10; // 최대 게시물
+    const totalPage = Math.ceil(total/limit); // 총 페이지
+
+    // 페이징 출력
+    const [paging, setPaging] = useState([]);
+
+    // 현재 페이지 그룹의 첫번째 페이지
+    const [first,setFirst] = useState(0);
+    // 현재 페이지 그룹의 마지막 페이지
+    const [last,setLast] = useState(0);
+
+    // 이전 페이지
+    const [prev,setPrev] = useState(0);
+    // 다음 페이지
+    const [next,setNext] = useState(0);
 
     useEffect(()=>{
 
-        const pageGroup = Math.ceil(page / 5); // 현재 페이지 그룹
-        const startAmount = ((pageGroup - 1) * 5) + 1 // 시작페이지
-        let endAmount = pageGroup * 5; // 마지막 페이지
+        // 현재 페이지 그룹
+        const pageGroup = Math.ceil(currentPage / 5);
 
-        if(endAmount >= totalPage){
-            endAmount = totalPage;
+        // 마지막 페이지
+        let endPage = pageGroup * 5;
+        if(endPage > totalPage) endPage = totalPage;
+        setLast(endPage);
+
+        // 시작 페이지
+        const startPage = endPage - ( 5 - 1 ) <= 0 ? 1 : endPage - (5 - 1);
+        setFirst(startPage);
+
+        // 페이징 출력
+        let pg = [];
+        for (let i = startPage; i <= endPage; i++){
+            pg.push(i);
         }
+        setPaging(pg);
 
-        let arr = [];
+        // 이전페이지 세팅
+        setPrev(startPage - 1);
 
-        if(totalPage > 1){
-            for (let i = startAmount; i <= endAmount; i++ ){
-                arr.push(i);
-            }
-        }
+        // 다음페이지 세팅
+        setNext(endPage + 1);
 
-        setStartAmount(startAmount);
-        setEndAmount(endAmount);
-        setCount(arr);
+        let copy = [...data];
+        const sclie = copy.slice((currentPage - 1)*limit,limit*currentPage);
+        setChangeData(sclie);
 
-        console.log(page,startAmount,endAmount);
-
-    },[page]);
-
-    
-
+    },[currentPage]);
 
     return (
       <div className="paging">
   
           {
-            startAmount > 1 &&
-            <button className='prev' onClick={()=>{pageMove(startAmount-1)}}><AiOutlineLeft/></button>
+            prev > 0 &&
+            <button 
+                className='prev'
+                // onClick={()=>firstPage - 1 }
+            >
+                <AiOutlineLeft/>
+            </button>
+          }
+
+          {
+            paging.map(e=>(
+                <button 
+                    className={ e == currentPage ? "act" : null} 
+                    key={e}
+                    onClick={()=>{
+                        navigate(`?page=${e}`);
+                    }}
+                >
+                    {e}
+                </button>
+            ))
           }
   
           {
-              count.map((e,i)=>(
-                  <button key={i} className={page === e ? "act" : ""} onClick={()=>pageMove(e)}>{e}</button>
-              ))
-          }
-  
-          {
-            totalPage > endAmount &&
-            <button className='next' onClick={()=>{pageMove(endAmount+1)}}><AiOutlineRight/></button>
+            last < totalPage &&
+            <button 
+                className='next'
+                // onClick={()=>lastPage + 1}
+            >
+                <AiOutlineRight/>
+            </button>
           }
           
       </div>

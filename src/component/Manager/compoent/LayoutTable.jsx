@@ -11,16 +11,13 @@ import { deleteAction, updateRank } from '../store/memeber'
 
 function LayoutTable({
   head, // 테이블머리
-  dataset, // 데이터
+  data, // 데이터
+  setChangeData, // 데이터 수정 함수
   check,
   order,
   action,
   api,
-  update,
-  setpage,
-  page,
   offset,
-  total,
   checkApi
 }){
 
@@ -53,7 +50,7 @@ function LayoutTable({
       if(checked){
         
         const idArr = [];
-        dataset.forEach(el=> idArr.push(el.seq));
+        data.forEach(el=> idArr.push(el.seq));
         checkApi.setCheckItem(idArr);
 
       }else{
@@ -85,194 +82,192 @@ function LayoutTable({
 
     return (
 
-        <>
-          <div className="table-grid">
-    
-            <div className="col" style={{gridTemplateColumns:gridColumns}}>
-    
-              {
-                check &&
-                <label htmlFor="allchk" className='table-check'>
-                  <input 
-                    type="checkbox" 
-                    name="allchk" 
-                    id="allchk" 
-                    onChange={(event)=>allCheckHandler(event.target.checked)} 
-                    defaultChecked={checkApi.checkItem.length > 0 ? dataset.length === checkApi.checkItem.length ? true : false : false}
-                  />
-                  <div><BsCheck/></div>
-                </label>
-              }
-    
-              {
-                order &&
-                <p>번호</p>
-              }
-              
-              {
-                head.map((e,i)=>(
-                  <p key={i}>{e.text}</p>
-                ))
-              }
-    
-              {
-                action &&
-                <p>Action</p>
-              }
-    
-            </div>
-    
-            <>
-              {
-                dataset?.length > 0 ?  
+      <>
+        <div className="table-grid">
+      
+          <div className="col" style={{gridTemplateColumns:gridColumns}}>
 
-                dataset.map((e,i)=>(
-                    <div key={i} className="col" style={{ 
-                      gridTemplateColumns: dataset ? gridColumns : "1fr"
-                    }}>
-    
-                      {
-                        check 
-                        &&
-                        <label htmlFor={`chk${i}`} className='table-check'>
-                          <input 
-                            type="checkbox" 
-                            name={`chk${i}`}
-                            id={`chk${i}`} 
-                            onChange={(event)=>{singleCheckHandler(event.target.checked,e.seq)}} 
-                            checked={checkApi.checkItem.includes(e.seq) ? true : false}
-                          />
-                          <div><BsCheck/></div>
-                        </label>
-                      }
-    
-                      {
-                        order && <p>{offset+(i+1)}</p>
-                      }
-    
-                      {
-                        headKey.map((keys,i)=>{
-    
-                          // 유저 리스트
-                          if(keys == "rank"){
-                            
-                            return <Role api={api} key={i} e={e}/>
-    
-                          }else if(keys == "userID"){
-                            
-                            return <Link to={`view/${e.seq}`} key={i}>{e[String(keys)]}</Link>
+            {
+              check &&
+              <label htmlFor="allchk" className='table-check'>
+                <input 
+                  type="checkbox" 
+                  name="allchk" 
+                  id="allchk" 
+                  onChange={(event)=>allCheckHandler(event.target.checked)} 
+                  defaultChecked={checkApi.checkItem.length > 0 ? data.length === checkApi.checkItem.length ? true : false : false}
+                />
+                <div><BsCheck/></div>
+              </label>
+            }
 
-                          }
-                          // 게시판 관리 리스트
-                          else if(keys == "theme"){
-    
-                            return <Theme key={i} e={e}/>
-    
-                          }else if(keys == "board_table"){
-                            
-                            return <Link to={`view/${e.seq}`} key={i}>{e[String(keys)]}</Link>
+            {
+              order &&
+              <p>번호</p>
+            }
+            
+            {
+              head.map((e,i)=>(
+                <p key={i}>{e.text}</p>
+              ))
+            }
 
-                          }
-                          // 일반 게시판 리스트
-                          else if(keys == "title"){
-                            
-                            return <Link to={`view/${e.seq}`} key={i}>{e[String(keys)]}</Link>
+            {
+              action &&
+              <p>Action</p>
+            }
 
-                          }
-                          // 그외
-                          else {
-
-                            return <p key={i}>{e[String(keys)]}</p>
-
-                          }
-    
-                        })
-                      }
-                      
-                      {
-                        action 
-                        &&
-                        <div className='table-action'>
-                          <button className='update' onClick={(ei)=>upDateClick(ei,e.seq)}><BiSolidWrench/></button>
-                          <button className='delete' onClick={(ei)=>deleteClick(ei,e.seq)}><MdOutlineDelete/></button>
-                        </div>
-                      }
-    
-                    </div>
-                  ))
-                : 
-                <div className="col">
-                  "테이터가 존재하지 않습니다."
-                </div>
-              }
-            </>
-    
           </div>
-    
-          <Page
-            totalPage = {total}
-            page = {page}
-            setpage = {setpage}
-            api={api}
-          />
-    
-        </>
+
+          <>
+            {
+              data?.length > 0 ?  
+
+              data.map((e,i)=>(
+                  <div key={i} className="col" style={{ 
+                    gridTemplateColumns: data ? gridColumns : "1fr"
+                  }}>
+
+                    {
+                      check 
+                      &&
+                      <label htmlFor={`chk${i}`} className='table-check'>
+                        <input 
+                          type="checkbox" 
+                          name={`chk${i}`}
+                          id={`chk${i}`} 
+                          onChange={(event)=>{singleCheckHandler(event.target.checked,e.seq)}} 
+                          checked={checkApi.checkItem.includes(e.seq) ? true : false}
+                        />
+                        <div><BsCheck/></div>
+                      </label>
+                    }
+
+                    {
+                      order && <p>{offset+(i+1)}</p>
+                    }
+
+                    {
+                      headKey.map((keys,i)=>{
+
+                        // 유저 리스트
+                        if(keys == "rank"){
+                          
+                          return <Role api={api} key={i} e={e}/>
+
+                        }else if(keys == "userID"){
+                          
+                          return <Link to={`view/${e.seq}`} key={i}>{e[String(keys)]}</Link>
+
+                        }
+                        // 게시판 관리 리스트
+                        else if(keys == "theme"){
+
+                          return <Theme key={i} e={e}/>
+
+                        }else if(keys == "board_table"){
+                          
+                          return <Link to={`view/${e.seq}`} key={i}>{e[String(keys)]}</Link>
+
+                        }
+                        // 일반 게시판 리스트
+                        else if(keys == "title"){
+                          
+                          return <Link to={`view/${e.seq}`} key={i}>{e[String(keys)]}</Link>
+
+                        }
+                        // 그외
+                        else {
+
+                          return <p key={i}>{e[String(keys)]}</p>
+
+                        }
+
+                      })
+                    }
+                    
+                    {
+                      action 
+                      &&
+                      <div className='table-action'>
+                        <button className='update' onClick={(ei)=>upDateClick(ei,e.seq)}><BiSolidWrench/></button>
+                        <button className='delete' onClick={(ei)=>deleteClick(ei,e.seq)}><MdOutlineDelete/></button>
+                      </div>
+                    }
+
+                  </div>
+                ))
+              : 
+              <div className="col">
+                "테이터가 존재하지 않습니다."
+              </div>
+            }
+          </>
+
+        </div>
+
+        <Page
+          data={data}
+          setChangeData={setChangeData}
+        />
+      </>
     
     )
 
+}
 
-    // 테마 수정
-    function Theme({e}){
+// 테마 수정
+function Theme({e}){
 
-        return (
+  return (
 
-            <select defaultValue={e.table_name} className='table-select'>
-            {
-                ['일반 게시판','갤러리 게시판'].map((s)=>(
-                <option key={s} value={s}>{s}</option>
-                ))
-            }
-            </select>
+      <select defaultValue={e.table_name} className='table-select'>
+      {
+          ['일반 게시판','갤러리 게시판'].map((s)=>(
+          <option key={s} value={s}>{s}</option>
+          ))
+      }
+      </select>
 
-        )
+  )
+
+}
+
+
+// 권한 수정
+function Role({e}){
+
+  // 디스패치
+  const dispatch = useDispatch();
+
+  const roleUpdate = (a)=>{
+    a.preventDefault();
+  
+    if(window.confirm('권한을 수정하겠습니까?')){
+      
+      const pushData = {
+        seq : e.seq,
+        rank : a.target.value
+      }
+
+      dispatch(updateRank(pushData));
+
+    }else{
+
+      a.target.value = e.rank;
 
     }
+  };
 
-
-    // 권한 수정
-    function Role({api,e}){
-    
-        const roleUpdate = (a)=>{
-          a.preventDefault();
-        
-          if(window.confirm('권한을 수정하겠습니까?')){
-            
-            const pushData = {
-              seq : e.seq,
-              rank : a.target.value
-            }
-
-            dispatch(updateRank(pushData));
-
-          }else{
-
-            a.target.value = e.rank;
-
-          }
-        };
-
-        return (      
-          <select defaultValue={e.rank} className='table-select' onChange={roleUpdate}>
-            {
-              [1,2,3,4,5,6,7,8,9,10].map((s)=>(
-                <option key={s} value={s}>{s}</option>
-              ))
-            }
-          </select>
-        )
-    
-    }
-
+  return (      
+    <select defaultValue={e.rank} className='table-select' onChange={roleUpdate}>
+      {
+        [1,2,3,4,5,6,7,8,9,10].map((s)=>(
+          <option key={s} value={s}>{s}</option>
+        ))
+      }
+    </select>
+  )
 
 }
 

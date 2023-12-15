@@ -3,12 +3,12 @@ import {useNavigate, useParams} from "react-router-dom"
 import {MdOutlineDelete} from "react-icons/md"
 import {BiSolidWrench,BiSearch} from "react-icons/bi"
 import {BsCheck} from "react-icons/bs"
-import axios from 'axios';
+import { useSelector } from 'react-redux'
 
 // 컴포넌트
 import Button from '../../compoent/Button'
 import LayoutTable from '../../compoent/LayoutTable'
-import { useSelector } from 'react-redux'
+import Page from '../../compoent/Page'
 
 function List(props) {
 
@@ -96,10 +96,11 @@ function List(props) {
         <LayoutTable
             // check={check}
             // checkApi = {checkApi}
-            dataset={changeData}
+            data={changeData} // 데이터
+            setChangeData={setChangeData} // 데이터 수정 함수
             order={order}
-            action={action}
-            head={head}
+            action={action} // 수정 / 삭제
+            head={head} // 테이블 헤더
             api={api}
             page={page}
             setpage={setpage}
@@ -108,10 +109,8 @@ function List(props) {
         />
 
         <div className="btn-list">
-
           {/* <Button color={"color02"} onClick={selDel}>선택 삭제</Button> */}
           <Button onClick={()=>navigate('write')}>등록</Button>
-
         </div>
 
       </div>
