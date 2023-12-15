@@ -182,27 +182,17 @@ function Manager() {
             
             <Route index element={
               <List 
-                select={true} 
-                search={true}
-                check={true}
-                order={true}
-                action={true}
-                api={'member'}
-                seleter={[
+                seleter={[ // 검색기능
                   {
                     text : "아이디",
-                    value : "id"
+                    value : "userID"
                   },
                   {
                     text : "닉네임",
-                    value : "nickname"
-                  },
-                  {
-                    text : "권한",
-                    value : "rank"
+                    value : "nickName"
                   }
                 ]}
-                head={[
+                head={[ // 테이블 헤더
                   {
                     text : "아이디",
                     value : "userID"
@@ -214,8 +204,18 @@ function Manager() {
                   {
                     text : '권한',
                     value : "rank"
+                  },
+                  {
+                    text : '작성날짜',
+                    value : "wtDate"
                   }
                 ]}
+
+                check={true}
+                order={true}
+                action={true}
+                api={'member'}
+                
               />}
             />
             

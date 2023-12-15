@@ -29,7 +29,6 @@ function LayoutTable({
 
     // 디스패치
     const dispatch = useDispatch();
-    
 
     // colums
     const gridColumns = `${check ? "75px": ""} ${order ? "120px": ""} repeat(${head.length},1fr) ${action ? "150px" : ""}`;
