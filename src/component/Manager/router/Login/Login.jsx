@@ -67,8 +67,6 @@ function Login() {
             return alert ('아이디가 존재하지 않습니다');
         }
 
-        console.log(chid);
-
     }
 
 
@@ -92,7 +90,8 @@ function Login() {
 
                 <div className="it">
                     <input 
-                        type="password" 
+                        type="password"
+                        autoComplete='off'
                         ref={passRef}
                         value={inputPW} 
                         placeholder='패스워드' 
