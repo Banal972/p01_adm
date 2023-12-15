@@ -28,10 +28,7 @@ function List(props) {
   // 셀렉버튼 데이터 가져오기
   const [selectData,setSelectData] = useState([]);
 
-  //페이지 번호
-  const [page,setpage] = useState(1); // 현재 페이지 번호
-  const [offset,setOffset] = useState(0); // offset
-  const [total,setTotal] = useState(0); // total
+
 
 /*   //체크버튼
   const [checkItem,setCheckItem] = useState([]);
@@ -102,10 +99,6 @@ function List(props) {
             action={action} // 수정 / 삭제
             head={head} // 테이블 헤더
             api={api}
-            page={page}
-            setpage={setpage}
-            offset={offset}
-            total={total}
         />
 
         <div className="btn-list">
@@ -152,8 +145,6 @@ function Select({
       filter = data.filter(e=>{
 
         if(select == ""){
-          console.log(e['userID'].includes(input));
-          console.log(e['nickName'].includes(input));
           return e['userID'].includes(input) || e['nickName'].includes(input);
         }else{
           if(typeof e[select] == "string"){

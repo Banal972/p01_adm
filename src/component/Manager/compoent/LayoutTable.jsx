@@ -17,7 +17,6 @@ function LayoutTable({
   order,
   action,
   api,
-  offset,
   checkApi
 }){
 
@@ -144,7 +143,7 @@ function LayoutTable({
                     }
 
                     {
-                      order && <p>{offset+(i+1)}</p>
+                      order && <p>1</p>
                     }
 
                     {
@@ -199,7 +198,7 @@ function LayoutTable({
                 ))
               : 
               <div className="col">
-                "테이터가 존재하지 않습니다."
+                테이터가 존재하지 않습니다.
               </div>
             }
           </>

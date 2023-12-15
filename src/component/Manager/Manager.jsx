@@ -25,6 +25,10 @@ import TableWrite from "./router/Layout/Write"
 import Auth from './auth/Auth'
 
 
+// 테스트 라우터
+import UserList from "./router/User/List";
+
+
 function Manager() {
   return (
     <>
@@ -180,8 +184,9 @@ function Manager() {
           {/* 회원 관리 */}
           <Route path='user'>
             
-            <Route index element={
-              <List 
+            <Route index element={<UserList/>}/>
+
+            {/* <List 
                 seleter={[ // 검색기능
                   {
                     text : "아이디",
@@ -215,9 +220,7 @@ function Manager() {
                 order={true}
                 action={true}
                 api={'member'}
-                
-              />}
-            />
+              /> */}
             
             <Route path='write'>
               <Route index element={<UserWrite/>}/>
