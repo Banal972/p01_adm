@@ -7,7 +7,7 @@ import Page from "./Page"
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { delAction } from '../store/menu'
-import { deleteAction } from '../store/memeber'
+import { deleteAction, updateRank } from '../store/memeber'
 
 function LayoutTable({
   head, // 테이블머리
@@ -243,49 +243,33 @@ function LayoutTable({
     // 권한 수정
     function Role({api,e}){
     
-        return (
-                
-            <select defaultValue={e.rank} className='table-select' onChange={(ei)=>{
+        const roleUpdate = (a)=>{
+          a.preventDefault();
         
-                ei.preventDefault();
-        
-                if(window.confirm('권한을 수정하겠습니까?')){
-                  
-                    axios.put(`${api}/role`,{
-                      seq : e.seq,
-                      role : ei.target.value
-                    })
-                    .then(res=>{
-                      const {data} = res;
-
-                      if(data.suc === true){
-                        alert('수정이 완료 되었습니다.');
-                      }else{
-                        ei.target.value = e.rank;
-                        alert('수정을 실패하였습니다.');
-                      }
-
-                    })
-                    .catch(err=>console.error(err));
-
-                }else{
-
-                  ei.target.value = e.rank;
-
-                }
-        
-            }}>
-        
-            {
-                
-                [1,2,3,4,5,6,7,8,9,10].map((s)=>(
-                <option key={s} value={s}>{s}</option>
-                ))
-                
+          if(window.confirm('권한을 수정하겠습니까?')){
+            
+            const pushData = {
+              seq : e.seq,
+              rank : a.target.value
             }
-        
-            </select>
-    
+
+            dispatch(updateRank(pushData));
+
+          }else{
+
+            a.target.value = e.rank;
+
+          }
+        };
+
+        return (      
+          <select defaultValue={e.rank} className='table-select' onChange={roleUpdate}>
+            {
+              [1,2,3,4,5,6,7,8,9,10].map((s)=>(
+                <option key={s} value={s}>{s}</option>
+              ))
+            }
+          </select>
         )
     
     }

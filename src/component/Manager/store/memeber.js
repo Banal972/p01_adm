@@ -49,6 +49,18 @@ export const memeber = createSlice({
             }
 
         },
+        updateRank(state,action){
+            const rs = state.findIndex(e=>e.seq == action.payload.seq);
+
+            const pushData = {
+                rank : action.payload.rank
+            }
+
+            state[rs] = {
+                ...state[rs],
+                ...pushData
+            };
+        },
         updateAction(state,action){
 
             const rs = state.findIndex(e=>e.seq == action.payload.seq);
@@ -62,6 +74,6 @@ export const memeber = createSlice({
     }
 });
 
-export const {addAction,deleteAction,updateAction} = memeber.actions;
+export const {addAction,deleteAction,updateAction,updateRank} = memeber.actions;
 
 export default memeber.reducer;

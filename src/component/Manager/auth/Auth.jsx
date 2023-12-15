@@ -23,6 +23,9 @@ function Auth({children}) {
 
         }
 
+    }else{
+        alert("비정상적인 접속입니다.");
+        return <Navigate to={'/manager'} />
     }
     
 }
