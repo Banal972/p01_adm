@@ -7,9 +7,21 @@ import Page from "./Page"
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { delAction } from '../store/menu'
+import { deleteAction } from '../store/memeber'
 
 function LayoutTable({
-  head,check,order,dataset,action,api,update,setpage,page,offset,total,checkApi
+  head, // 테이블머리
+  dataset, // 데이터
+  check,
+  order,
+  action,
+  api,
+  update,
+  setpage,
+  page,
+  offset,
+  total,
+  checkApi
 }){
 
     // 내비게이터
@@ -17,14 +29,15 @@ function LayoutTable({
 
     // 디스패치
     const dispatch = useDispatch();
+    
 
     // colums
     const gridColumns = `${check ? "75px": ""} ${order ? "120px": ""} repeat(${head.length},1fr) ${action ? "150px" : ""}`;
 
-    // 테이블 헤더
+    // 테이블 헤더 키값 가져오기
     const headKey = head.map((key)=>key.value);
 
-
+    // 단일선택
     const singleCheckHandler = (checked,seq)=>{
 
       if(checked){
@@ -35,6 +48,7 @@ function LayoutTable({
 
     }
 
+    // 전체 선택
     const allCheckHandler = (checked)=>{
 
       if(checked){
@@ -62,29 +76,8 @@ function LayoutTable({
 
       if(window.confirm('삭제하시겠습니까?')){
 
-        axios.delete(`${api}/del`,{
-          params : {
-            seq : id
-          }
-        })
-        .then(res=>{
-          const {data} = res;
-          if(data.suc){
-            alert(data.msg);
-            update(); // 다시 데이터 불러오기
-
-            if(api === "/api/board"){
-              dispatch(delAction(dataset.board_table))
-            }
-
-          }else{
-            alert(data.msg);
-          }
-        })
-        .catch(err=>{
-          alert('오류가 발생했습니다.')
-          console.error(err);
-        });
+        dispatch(deleteAction(id));
+        alert('삭제가 완료 되었습니다.');
       
       }
 

@@ -1,10 +1,12 @@
 import {configureStore} from "@reduxjs/toolkit"
-import lmReducer from "../component/Manager/store/login";
+import loginMemberReducer from "../component/Manager/store/login";
+import memeberReducer from "../component/Manager/store/memeber";
 import { menuManger } from "../component/Manager/store/menu";
 
 export default configureStore({
     reducer : {
-        lm : lmReducer,
-        mm : menuManger.reducer
+        loginMember : loginMemberReducer,
+        member : memeberReducer,
+        mm : menuManger.reducer,
     }
 });

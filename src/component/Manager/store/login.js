@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 export const loginManger = createSlice({
-    name : "lm",
+    name : "loginMember",
     initialState : {},
     reducers : {
         addAction : (state,action) => {

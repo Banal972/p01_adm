@@ -187,7 +187,7 @@ function Manager() {
                 check={true}
                 order={true}
                 action={true}
-                api={'/api/user'}
+                api={'member'}
                 seleter={[
                   {
                     text : "아이디",
@@ -199,7 +199,7 @@ function Manager() {
                   },
                   {
                     text : "권한",
-                    value : "role"
+                    value : "rank"
                   }
                 ]}
                 head={[
@@ -214,14 +214,6 @@ function Manager() {
                   {
                     text : '권한',
                     value : "rank"
-                  },
-                  {
-                    text : '작성날짜',
-                    value : "wtDate"
-                  },
-                  {
-                    text : '최근 로그인',
-                    value : "update"
                   }
                 ]}
               />}

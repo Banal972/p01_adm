@@ -8,6 +8,7 @@ import axios from 'axios';
 // 컴포넌트
 import Button from '../../compoent/Button'
 import LayoutTable from '../../compoent/LayoutTable'
+import { useSelector } from 'react-redux'
 
 function List(props) {
 
@@ -17,8 +18,9 @@ function List(props) {
   // props 가져오가
   const {seleter,select,search,head,check,order,action,api} = props;
 
-  // 데이터 가져오기
-  const [dataSet,setDataSet] = useState([]);
+  const data = useSelector(state=>state[api]);
+  
+  // console.log(data);
 
   // 셀렉버튼 데이터 가져오기
   const [selectData,setSelectData] = useState([]);
@@ -38,52 +40,12 @@ function List(props) {
     checkItem : checkItem,
     setCheckItem : setCheckItem
   }
-
-  // 테이블 데이터 가져오기
-  const tableDataGet = ()=>{
-
-    if(table){
-
-      axios.get(api,{
-          params : {
-              table : table,
-              page : page
-          }
-      })
-        .then(({data})=>{
-
-            const {suc,info} = data;
-
-            if(suc){
-              setDataSet(info);
-            }
-
-        })
-        .catch(err=>console.error(err));
-
-    }else{
-
-      axios.get(api)
-        .then(({data})=>{
-          
-          const {info,suc} = data;
-
-          if(suc){
-            setDataSet(info);
-          }
-
-        })
-        .catch(err=>console.error(err));
-
-    }
-
-  }
   
   // 전체 데이터 가져오기
   useEffect(()=>{
 
     setCheckItem([]); // 체크박스 초기화
-    tableDataGet();
+    // tableDataGet();
 
   },[api,table,page]);
 
@@ -104,7 +66,7 @@ function List(props) {
         if(data.suc){
           alert(data.msg);
           setCheckItem([]); // 초기화
-          tableDataGet(); // 다시 데이터 불러오기
+          // tableDataGet(); // 다시 데이터 불러오기
         }else{
           alert(data.msg);
         }
@@ -128,22 +90,19 @@ function List(props) {
             seleter={seleter}
           /> 
         }
-        { search && <Search setDataSet={setDataSet} selectData={selectData} api={api}/> }
+        {/* { search && <Search setDataSet={setDataSet} selectData={selectData} api={api}/> } */}
       </div>
 
       <div className="layout">
 
         <LayoutTable
             check={check}
-
             checkApi = {checkApi}
-
             order={order}
             action={action}
             head={head}
             api={api}
-            dataset={dataSet}
-            update = {tableDataGet}
+            dataset={data}
             page={page}
             setpage={setpage}
             offset={offset}
@@ -185,7 +144,7 @@ function Select({seleter,selectData,setSelectData}) {
 }
 
 // 검색버튼
-function Search({selectData,setDataSet,api}) {
+/* function Search({selectData,setDataSet,api}) {
 
   // paprams 가져오기
   const {table} = useParams();
@@ -240,7 +199,7 @@ function Search({selectData,setDataSet,api}) {
     </label>
   )
 
-}
+} */
 
 
 
