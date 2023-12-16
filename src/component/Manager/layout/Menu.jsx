@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react'
 import {Link, useLocation} from "react-router-dom"
 import {BiHomeAlt,BiSolidChat,BiUser,BiCalendarAlt,BiBrightness} from "react-icons/bi"
 import { AiOutlinePicture } from "react-icons/ai";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 import { useDispatch, useSelector } from 'react-redux';
 
 function Menu() {
@@ -50,10 +51,10 @@ function Menu() {
                 <Link to={'main'} className={loca === "/" ? "act" : "" } ><div className="icon"><BiHomeAlt/></div> 대시보드</Link>
             </li>
             <li>
-                <Link className={loca === "user" ? "act" : "" } to={"user"}><div className="icon"><AiOutlinePicture  /></div> 배너관리</Link>
+                <Link className={loca === "user" ? "act" : "" } to={"banner"}><div className="icon"><AiOutlinePicture  /></div> 배너 관리</Link>
             </li>
             <li>
-                <Link className={loca === "board" ? "act" : "" } to={'board'}><div className="icon"><BiSolidChat/></div> 게시판관리</Link>
+                <Link className={loca === "board" ? "act" : "" } to={'board'}><div className="icon"><BiSolidChat/></div> 게시판 관리</Link>
 
                 {
                     menu.length > 0 ?
@@ -69,7 +70,10 @@ function Menu() {
 
             </li>
             <li>
-                <Link className={loca === "user" ? "act" : "" } to={"user"}><div className="icon"><BiUser/></div> 회원관리</Link>
+                <Link className={loca === "user" ? "act" : "" } to={"user"}><div className="icon"><BiUser/></div> 회원 관리</Link>
+            </li>
+            <li>
+                <Link className={loca === "inqury" ? "act" : "" } to={"inqury"}><div className="icon"><AiOutlineCloudUpload/></div> 온라인 문의</Link>
             </li>
             <li>
                 <Link className={loca === "log" ? "act" : "" } to={'log'}><div className="icon"><BiCalendarAlt/></div> 접속현황</Link>
