@@ -114,8 +114,6 @@ export default function List() {
         // 다음페이지 세팅
         setNext(endPage + 1);
 
-        console.log(totalPage);
-
     },[currentPage, total]);
 
     // 쿼리스트링에 따른 값
@@ -160,6 +158,31 @@ export default function List() {
 
     }
 
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 체크박스
+    const [chkItem,setChkItem] = useState([]);
+    const allChkHandler = (e)=>{
+        if(e.target.checked){
+            const arr = [];
+            data.forEach(e=>arr.push(e.seq));
+            setChkItem(arr);
+        }else{
+            setChkItem([]);
+        }
+    }
+
+    const singleChkHanlder = (e,seq)=>{
+        if(e.target.checked){
+            setChkItem((prev)=>[...prev,seq])
+        }else{
+            setChkItem(chkItem.filter(el=> el !== el.seq));
+        }
+    }
+
+    useEffect(()=>{
+        setChkItem([]);
+    },[searchParams])
+
+
 
   return (
     <>
@@ -187,7 +210,14 @@ export default function List() {
                         <input 
                             type="checkbox" 
                             name="allchk" 
-                            id="allchk" 
+                            id="allchk"
+                            checked={
+                                chkItem.length > 0 ? 
+                                    data.length === chkItem.length ? true : false 
+                                : false
+                            }
+                            onChange={allChkHandler}
+                            readOnly
                         />
                         <div><BsCheck/></div>
                     </label>
@@ -209,10 +239,12 @@ export default function List() {
                             key={i}
                         >
 
-                            <label htmlFor='chk1' className='table-check'>
+                            <label htmlFor={`chk${e.seq}`} className='table-check'>
                                 <input 
                                     type="checkbox" 
-                                    id="chk1"
+                                    id={`chk${e.seq}`}
+                                    checked={chkItem.includes(e.seq) ? true : false}
+                                    onChange={(event)=>singleChkHanlder(event,e.seq)}
                                 />
                                 <div><BsCheck/></div>
                             </label>
