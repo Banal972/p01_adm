@@ -809,6 +809,14 @@ export const memeber = createSlice({
             }
 
         },
+        multipleDeleteAction(state,action){
+            action.payload.forEach(e=>{
+                const rs = state.findIndex(index=>index.seq == e);
+                if(rs > -1){
+                    state.splice(rs,1);
+                }
+            })
+        },
         updateRank(state,action){
             const rs = state.findIndex(e=>e.seq == action.payload.seq);
 
@@ -834,6 +842,12 @@ export const memeber = createSlice({
     }
 });
 
-export const {addAction,deleteAction,updateAction,updateRank} = memeber.actions;
+export const { 
+    addAction,
+    deleteAction,
+    updateAction,
+    updateRank,
+    multipleDeleteAction
+} = memeber.actions;
 
 export default memeber.reducer;

@@ -6,7 +6,7 @@ import {MdOutlineDelete} from "react-icons/md"
 import {BiSolidWrench,BiSearch} from "react-icons/bi"
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteAction, updateRank } from '../../store/memeber'
+import { deleteAction, multipleDeleteAction, updateRank } from '../../store/memeber'
 
 export default function List() {
 
@@ -114,7 +114,7 @@ export default function List() {
         // 다음페이지 세팅
         setNext(endPage + 1);
 
-    },[currentPage, total]);
+    },[currentPage, total, member]);
 
     // 쿼리스트링에 따른 값
     useEffect(()=>{
@@ -141,7 +141,7 @@ export default function List() {
         const sclie = filter.slice((currentPage - 1)*limit,limit*currentPage);
         setData(sclie);
 
-    },[searchParams, currentPage]);
+    },[searchParams, currentPage, member]);
 
 
     // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 검색관련
@@ -180,7 +180,7 @@ export default function List() {
 
     useEffect(()=>{
         setChkItem([]);
-    },[searchParams])
+    },[searchParams,data])
 
 
 
@@ -231,61 +231,64 @@ export default function List() {
                 </div>
 
                 {
-                    data.map((e,i)=>(
+                    data.length > 0 ?
+                        data.map((e,i)=>(
 
-                        <div 
-                            className="col" 
-                            style={{gridTemplateColumns: "75px 120px repeat(4,1fr) 150px"}}
-                            key={i}
-                        >
-
-                            <label htmlFor={`chk${e.seq}`} className='table-check'>
-                                <input 
-                                    type="checkbox" 
-                                    id={`chk${e.seq}`}
-                                    checked={chkItem.includes(e.seq) ? true : false}
-                                    onChange={(event)=>singleChkHanlder(event,e.seq)}
-                                />
-                                <div><BsCheck/></div>
-                            </label>
-
-                            <p>{(i+1) + (limit * (currentPage - 1))}</p>
-
-                            <Link to={`view/${e.seq}`}>{e.userID}</Link>
-
-                            <p>{e.nickName}</p>
-
-                            <select 
-                                className='table-select'
-                                defaultValue={e.rank}
-                                onChange={(a)=>rankUpdate(e,a)}
+                            <div 
+                                className="col" 
+                                style={{gridTemplateColumns: "75px 120px repeat(4,1fr) 150px"}}
+                                key={i}
                             >
-                                {
-                                    [1,2,3,4,5,6,7,8,9,10].map((a)=>(
-                                        <option 
-                                            key={a}
-                                            value={a}
-                                        >{a}</option>
-                                    ))
-                                }
-                            </select>
 
-                            <p>{e.wtDate}</p>
-                                    
-                            <div className='table-action'>
-                                <button 
-                                    className='update' 
-                                    onClick={()=>updateHandler(e.seq)}
-                                ><BiSolidWrench/></button>
-                                <button 
-                                    className='delete'
-                                    onClick={()=>deleteHandler(e.seq)}
-                                ><MdOutlineDelete/></button>
+                                <label htmlFor={`chk${e.seq}`} className='table-check'>
+                                    <input 
+                                        type="checkbox" 
+                                        id={`chk${e.seq}`}
+                                        checked={chkItem.includes(e.seq) ? true : false}
+                                        onChange={(event)=>singleChkHanlder(event,e.seq)}
+                                    />
+                                    <div><BsCheck/></div>
+                                </label>
+
+                                <p>{(i+1) + (limit * (currentPage - 1))}</p>
+
+                                <Link to={`view/${e.seq}`}>{e.userID}</Link>
+
+                                <p>{e.nickName}</p>
+
+                                <select 
+                                    className='table-select'
+                                    defaultValue={e.rank}
+                                    onChange={(a)=>rankUpdate(e,a)}
+                                >
+                                    {
+                                        [1,2,3,4,5,6,7,8,9,10].map((a)=>(
+                                            <option 
+                                                key={a}
+                                                value={a}
+                                            >{a}</option>
+                                        ))
+                                    }
+                                </select>
+
+                                <p>{e.wtDate}</p>
+                                        
+                                <div className='table-action'>
+                                    <button 
+                                        className='update' 
+                                        onClick={()=>updateHandler(e.seq)}
+                                    ><BiSolidWrench/></button>
+                                    <button 
+                                        className='delete'
+                                        onClick={()=>deleteHandler(e.seq)}
+                                    ><MdOutlineDelete/></button>
+                                </div>
+
                             </div>
 
-                        </div>
-
-                    ))
+                        ))
+                    :
+                    <p style={{textAlign : "center", padding : "20px 0", borderTop : "1px solid #EEF4F4"}}>회원이 존재하지 않습니다.</p>
                 }
 
             </div>
@@ -334,7 +337,16 @@ export default function List() {
             </div>
 
             <div className="btn-list">
-                <Button color={"color02"}>선택 삭제</Button>
+                <Button 
+                    color={"color02"}
+                    onClick={()=>{
+                        dispatch(multipleDeleteAction(chkItem));
+                        if( searchParams.get('page') >= totalPage){
+                            searchParams.set('page',last-1);
+                            setSearchParams(searchParams);
+                        }
+                    }}
+                >선택 삭제</Button>
                 <Button onClick={()=>navigate('write')}>등록</Button>
             </div>
 

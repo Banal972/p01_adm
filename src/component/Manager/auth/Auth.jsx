@@ -1,12 +1,11 @@
 import React from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 
 function Auth({children}) {
 
     // 세션 가져오기
     const loginUser = useSelector(state=>state.loginMember);
-    console.log(loginUser);
 
     if (loginUser) {
 
