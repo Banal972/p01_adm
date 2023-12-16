@@ -5,8 +5,8 @@ import {BsCheck} from "react-icons/bs"
 
 // 컴포넌트
 import Button from "../../compoent/Button";
-import { useDispatch } from "react-redux";
-import { addAction } from "../../store/menu";
+import { useDispatch, useSelector } from "react-redux";
+import { addAction } from "../../store/table";
 
 function Write() {
   
@@ -16,49 +16,54 @@ function Write() {
     // 내비게이터
     const navigate = useNavigate();
 
+    // 로그인한 유저
+    const loginMember = useSelector(state=>state.loginMember);
+
+    // 테이블 데이터
+    const tableManager = useSelector(state=>state.tableManager);
+
     // 디스패치
     const dispatch = useDispatch();
+
+    // 셀럭트
+    const [select,setSelect] = useState("normal");
 
     // 데이터
     const [inputData,setInputData] = useState({
         board_name : "",
         board_table : "",
-        writer : "",
+        writer : loginMember.nickName,
         main : "N",
         img : "N"
     });
 
-    // 셀럭트
-    const [select,setSelect] = useState("normal");
-
+    // 파라미터가 있을경우 데이터 추가
     useEffect(() => {
         
         if(seq){
-            axios.get('/api/board/getBoard',
-            {
-                params: {
-                    seq : seq
-                }
-            })
-            .then(({data})=>{
-                
-                if(data.suc){
-                    setInputData(data.data);
 
-                    if(data.data.img === "Y"){
-                        setSelect("gallery");
-                    }
+            const filter = tableManager.filter(e=>e.seq == seq)[0];
 
-                }else{
-                    alert(data.msg);
+            setInputData((prev)=>(
+                {
+                    ...prev,
+                    board_name : filter.board_name,
+                    board_table : filter.board_table,
+                    writer : filter.writer,
+                    main : filter.main,
+                    img : filter.img
                 }
-            })
-            .catch(err=>console.error(err));
+            ));
+
+            if(filter.img === "Y"){
+                setSelect("gallery");
+            }
+
         }
 
     }, [seq]);
 
-    // inputData Update
+    // 데이터수정
     const inputHandler = (e,action)=>{
         let input = {};
         input[action] = e.target.value;
@@ -105,7 +110,9 @@ function Write() {
 
             if(window.confirm('수정 하시겠습니까?')){
 
-                axios.put('/api/board/create',inputData)
+                // dispatch(addAction())
+
+                /* axios.put('/api/board/create',inputData)
                 .then(({data})=>{
                     if(data.suc){
                         alert(data.msg);
@@ -114,7 +121,7 @@ function Write() {
                         alert(data.msg);
                     }
                 })
-                .catch(err=>console.log(err));
+                .catch(err=>console.log(err)); */
 
             }
 
@@ -122,17 +129,8 @@ function Write() {
 
             if(window.confirm('등록 하시겠습니까?')){
 
-                axios.post('/api/board/create',inputData)
-                .then(({data})=>{
-                    if(data.suc){
-                        alert(data.msg);
-                        dispatch(addAction({board_table : inputData.board_table, board_name : inputData.board_name}))
-                        navigate('/manager/board');
-                    }else{
-                        alert(data.msg);
-                    }
-                })
-                .catch(err=>console.log(err));
+                dispatch(addAction(inputData));
+                navigate('/manager/board');
 
             }
 

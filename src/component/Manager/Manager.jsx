@@ -76,56 +76,7 @@ function Manager() {
           {/* 게시판 관리 */}
           <Route path='board'>
 
-            <Route index element={
-              <List 
-                select={true} 
-                search={true}
-                check={true}
-                order={true}
-                action={true}
-                api={'/api/board'}
-                seleter={[
-                  {
-                    text : "게시판 이름",
-                    value : "board_name"
-                  },
-                  {
-                    text : "테이블 이름",
-                    value : "board_table"
-                  },
-                  {
-                    text : "작성자",
-                    value : "writer"
-                  }
-                ]}
-                head={[
-                  {
-                    text : '대시보드 메인',
-                    value : "main"
-                  },
-                  {
-                    text : '게시판 이름',
-                    value : "board_name"
-                  },
-                  {
-                    text : '테이블 이름',
-                    value : "board_table"
-                  },
-                  {
-                    text : '테마',
-                    value : "theme"
-                  },
-                  {
-                    text : '작성자',
-                    value : "writer"
-                  },
-                  {
-                    text : '작성날짜',
-                    value : "wDate"
-                  }
-                ]}
-              />}
-            />
+            <Route index element={<List store={'tableManager'}/>} />
 
             <Route path='write'>
               <Route index element={<BoardWrite/>}/>
@@ -135,55 +86,7 @@ function Manager() {
             <Route path='view' element={<>뷰 페이지</>}/>
             
             <Route path=':table'>
-              <Route 
-                index 
-                element = {
-                  <List
-                    select={true}
-                    seleter={[
-                      {
-                        text : "제목",
-                        value : "title"
-                      },
-                      {
-                        text : "내용",
-                        value : "content"
-                      },
-                      {
-                        text : "작성자",
-                        value : "writer"
-                      }
-                    ]}
-                    search={true}
-                    check={true}
-                    order={true}
-                    action={true}
-                    api={'/api/board/table'}
-                    head={[
-                      {
-                          text : '이미지',
-                          value : "imgURL"
-                      },
-                      {
-                          text : '제목',
-                          value : "title"
-                      },
-                      {
-                          text : '내용',
-                          value : "content"
-                      },
-                      {
-                          text : '작성자',
-                          value : "writer"
-                      },
-                      {
-                          text : '작성날짜',
-                          value : "wDate"
-                      }
-                    ]}
-                  />
-                }
-              />
+              <Route index element = {<List/>} />
               <Route path='write' element={<TableWrite/>}/>
             </Route>
 
@@ -194,42 +97,6 @@ function Manager() {
             
             <Route index element={<UserList/>}/>
 
-            {/* <List 
-                seleter={[ // 검색기능
-                  {
-                    text : "아이디",
-                    value : "userID"
-                  },
-                  {
-                    text : "닉네임",
-                    value : "nickName"
-                  }
-                ]}
-                head={[ // 테이블 헤더
-                  {
-                    text : "아이디",
-                    value : "userID"
-                  },
-                  {
-                    text : '닉네임',
-                    value : "nickName"
-                  },
-                  {
-                    text : '권한',
-                    value : "rank"
-                  },
-                  {
-                    text : '작성날짜',
-                    value : "wtDate"
-                  }
-                ]}
-
-                check={true}
-                order={true}
-                action={true}
-                api={'member'}
-              /> */}
-            
             <Route path='write'>
               <Route index element={<UserWrite/>}/>
               <Route path=':id' element={<UserWrite/>}/>

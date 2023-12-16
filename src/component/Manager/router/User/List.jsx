@@ -340,10 +340,12 @@ export default function List() {
                 <Button 
                     color={"color02"}
                     onClick={()=>{
-                        dispatch(multipleDeleteAction(chkItem));
-                        if( searchParams.get('page') >= totalPage){
-                            searchParams.set('page',last-1);
-                            setSearchParams(searchParams);
+                        if(window.confirm('삭제 하시겠습니까?')){
+                            dispatch(multipleDeleteAction(chkItem));
+                            if( searchParams.get('page') >= totalPage){
+                                searchParams.set('page',last-1);
+                                setSearchParams(searchParams);
+                            }
                         }
                     }}
                 >선택 삭제</Button>

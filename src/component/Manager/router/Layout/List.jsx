@@ -1,195 +1,332 @@
-import React,{useState,useEffect} from 'react'
-import {useNavigate, useParams} from "react-router-dom"
+import React, { useEffect, useState } from 'react'
+import Button from '../../compoent/Button'
+import {AiOutlineLeft,AiOutlineRight} from "react-icons/ai"
+import {BsCheck} from "react-icons/bs"
 import {MdOutlineDelete} from "react-icons/md"
 import {BiSolidWrench,BiSearch} from "react-icons/bi"
-import {BsCheck} from "react-icons/bs"
-import { useSelector } from 'react-redux'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteAction, multipleDeleteAction } from '../../store/table'
 
-// 컴포넌트
-import Button from '../../compoent/Button'
-import LayoutTable from '../../compoent/LayoutTable'
-import Page from '../../compoent/Page'
-
-function List(props) {
-
-  // 네비게이터
-  const navigate = useNavigate();
-
-  // paprams 가져오기
-  const {table} = useParams();
-
-  // props 가져오가
-  const {seleter,head,check,order,action,api} = props;
-
-  // 게시물 데이터
-  const data = useSelector(state=>state[api]); // 원본
-  const [changeData,setChangeData] = useState(data); // 수정데이터
-
-  // 셀렉버튼 데이터 가져오기
-  const [selectData,setSelectData] = useState([]);
-
-
-
-/*   //체크버튼
-  const [checkItem,setCheckItem] = useState([]);
-
-  const checkApi = {
-    checkItem : checkItem,
-    setCheckItem : setCheckItem
-  }
-  
-  // 전체 데이터 가져오기
-  useEffect(()=>{
-
-    setCheckItem([]); // 체크박스 초기화
-
-  },[table,page]);
-
-  //선택 삭제
-
-  const selDel = ()=>{
-
-    if(window.confirm('삭제하시겠습니까?')){
-
-      axios.delete(`${api}/seldel`,{
-        params : {
-          seq : checkItem,
-          table : table
-        }
-      })
-      .then(res=>{
-        const {data} = res;
-        if(data.suc){
-          alert(data.msg);
-          setCheckItem([]); // 초기화
-          // tableDataGet(); // 다시 데이터 불러오기
-        }else{
-          alert(data.msg);
-        }
-      })
-      .catch(err=>{
-        alert('오류가 발생했습니다.')
-        console.error(err);
-      });
-    
-    }
-
-  } */
-
-  return (
-    <>
-      <div className="layout top">
-        { seleter && 
-          <Select 
-            seleter={seleter} // 셀렉버튼 데이터
-            data={data} // 원본 데이터
-            setChangeData={setChangeData} // 데이터 수정 함수
-          /> 
-        }
-      </div>
-
-      <div className="layout">
-
-        <LayoutTable
-            // check={check}
-            // checkApi = {checkApi}
-            data={changeData} // 데이터
-            setChangeData={setChangeData} // 데이터 수정 함수
-            order={order}
-            action={action} // 수정 / 삭제
-            head={head} // 테이블 헤더
-            api={api}
-        />
-
-        <div className="btn-list">
-          {/* <Button color={"color02"} onClick={selDel}>선택 삭제</Button> */}
-          <Button onClick={()=>navigate('write')}>등록</Button>
-        </div>
-
-      </div>
-
-    </>
-  )
-    
-}
-
-// 검색버튼
-function Select({
-  seleter, // 검색 셀렉박스 데이터
-  data, // 원본 데이터
-  setChangeData // 수정 데이터 함수
+export default function List({
+  store // 리덕스 이름
 }) {
 
-  // paprams 가져오기
-  const {table} = useParams();
+    // 테이블 params 가져오기
+    const {table} = useParams();
 
-  const [input,setInput] = useState('');
-  const [select,setSelect] = useState('');
+    // 쿼리 스트링
+    const [searchParams, setSearchParams] = useSearchParams();
 
-  // 검색어
-  const onInput = (e)=>{
-    setInput(e.target.value);
-  }
+    // 네비게이터
+    const navigate = useNavigate();
 
-  // 셀렉버튼 이벤트
-  const onChange = (e)=>{
-    setSelect(e.target.value);
-  }
+    // 디스패치
+    const dispatch = useDispatch();
 
-  // 검색
-  const onKeyUp = (e)=>{
-    if(e.key === "Enter" || e.keyCode === 13){
-      
-      let filter = [...data];
+    // 유저 데이터
+    let getData = useSelector(state=>state[store]);
 
-      filter = data.filter(e=>{
+    const [data,setData] = useState([]);
 
-        if(select == ""){
-          return e['userID'].includes(input) || e['nickName'].includes(input);
-        }else{
-          if(typeof e[select] == "string"){
-            return e[select].includes(input);
-          }
+    // 업데이트 페이지
+    const updateHandler = (e)=>{
+        navigate(`write/${e}`);
+    }
+
+    // 삭제 페이지
+    const deleteHandler = (e)=>{
+        dispatch(deleteAction(e));
+        alert('삭제가 완료 되었습니다.');
+    }
+
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 페이지관련 
+
+    // 현재 페이지
+    const [currentPage,setCurrentPage] = useState(1);
+
+    useEffect(()=>{
+        setCurrentPage(searchParams.get('page') || 1);
+    },[searchParams]);
+
+    // 게시물 총 갯수
+    const [total,setTotal] = useState(getData.length);
+    // 최대 게시물
+    const limit = 10; 
+    // 총 페이지
+    const [totalPage,setTotalPage] = useState(Math.ceil(total/limit)); 
+
+    // 페이징 출력
+    const [paging, setPaging] = useState([]);
+
+    // 현재 페이지 그룹의 첫번째 페이지
+    const [first,setFirst] = useState(0);
+    // 현재 페이지 그룹의 마지막 페이지
+    const [last,setLast] = useState(0);
+
+    // 이전 페이지
+    const [prev,setPrev] = useState(0);
+    // 다음 페이지
+    const [next,setNext] = useState(0);
+
+    // 페이지 생성
+    useEffect(()=>{
+
+        // 현재 페이지 그룹
+        const pageGroup = Math.ceil(currentPage / 5);
+
+        // 마지막 페이지
+        let endPage = pageGroup * 5;
+        if(endPage > totalPage) endPage = totalPage;
+        setLast(endPage);
+
+        // 시작 페이지
+        const startPage = endPage - ( 5 - 1 ) <= 0 ? 1 : endPage - (5 - 1);
+        setFirst(startPage);
+
+        // 페이징 출력
+        let pg = [];
+        for (let i = startPage; i <= endPage; i++){
+            pg.push(i);
         }
+        setPaging(pg);
 
-      });
+        // 이전페이지 세팅
+        setPrev(startPage - 1);
 
-      setChangeData(filter);
+        // 다음페이지 세팅
+        setNext(endPage + 1);
+
+    },[currentPage, total, getData]);
+
+    // 쿼리스트링에 따른 값
+    useEffect(()=>{
+        
+        let copy = [...getData];
+
+        const type = searchParams.get('type') || "";
+        const search = searchParams.get('search') || "";
+
+        const filter = copy.filter(e=>{
+            if(type == ""){
+                return e['board_name'].includes(search) || e['board_table'].includes(search);
+            }else{
+                if(typeof e[type] == "string"){
+                    return e[type].includes(search)
+                }
+            }
+        });
+
+        // 토탈수정
+        setTotal(filter.length);
+        setTotalPage(Math.ceil(filter.length/limit));
+
+        const sclie = filter.slice((currentPage - 1)*limit,limit*currentPage);
+        setData(sclie);
+
+    },[searchParams, currentPage, getData]);
+
+
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 검색관련
+    const searchSubmit = (a)=>{
+
+        a.preventDefault();
+
+        const select = a.target.selector.value;
+        const input = a.target.searchInput.value;
+
+        searchParams.set('type',select);
+        searchParams.set('search',input);
+        setSearchParams(searchParams);
 
     }
-  }
+
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 체크박스
+    const [chkItem,setChkItem] = useState([]);
+    const allChkHandler = (e)=>{
+        if(e.target.checked){
+            const arr = [];
+            data.forEach(e=>arr.push(e.seq));
+            setChkItem(arr);
+        }else{
+            setChkItem([]);
+        }
+    }
+
+    const singleChkHanlder = (e,seq)=>{
+        if(e.target.checked){
+            setChkItem((prev)=>[...prev,seq])
+        }else{
+            setChkItem(chkItem.filter(el=> el !== el.seq));
+        }
+    }
+
+    useEffect(()=>{
+        setChkItem([]);
+    },[searchParams,data])
+
+
 
   return (
     <>
-      <select 
-        className="lay-select"
-        onChange={onChange}
-      >
-        <option value="">전체</option>
-        {
-          seleter.map((e,i)=>(
-            <option key={i} value={e.value}>{e.text}</option>
-          ))
-        }
-    </select>
-      <label htmlFor="search" className="lay-search compo-lay">
-        <div className="icon"><BiSearch/></div>
-        <input 
-          id="search" 
-          type="text" 
-          value={input} 
-          placeholder='Search...' 
-          onInput={onInput} 
-          onKeyUp={onKeyUp}
-        />
-    </label>
+        <form onSubmit={searchSubmit}>
+            <div className="layout top">
+                <select className="lay-select" name='selector'>
+                    <option value="">전체</option>
+                    <option value="board_name">게시판 이름</option>
+                    <option value="board_table">테이블 이름</option>
+                </select>
+                <label htmlFor="search" className="lay-search compo-lay">
+                    <div className="icon"><BiSearch/></div>
+                    <input id="search" type="text" name='searchInput' placeholder='Search...' />
+                </label>
+            </div>
+        </form>
+
+        <div className="layout">
+
+            <div className="table-grid">
+        
+                <div className="col" style={{gridTemplateColumns: "50px 120px repeat(5,1fr) 150px"}}>
+
+                    <label htmlFor="allchk" className='table-check'>
+                        <input 
+                            type="checkbox" 
+                            name="allchk" 
+                            id="allchk"
+                            checked={
+                                chkItem.length > 0 ? 
+                                    data.length === chkItem.length ? true : false 
+                                : false
+                            }
+                            onChange={allChkHandler}
+                            readOnly
+                        />
+                        <div><BsCheck/></div>
+                    </label>
+                    <p>번호</p>     
+                    <p>게시판 이름</p>
+                    <p>테이블 이름</p>
+                    <p>메인 출력</p>
+                    <p>이미지 출력</p>
+                    <p>작성자</p>
+                    <p>Action</p>
+
+                </div>
+
+                {
+                    data.length > 0 ?
+                        data.map((e,i)=>(
+
+                            <div 
+                                className="col" 
+                                style={{gridTemplateColumns: "50px 120px repeat(5,1fr) 150px"}}
+                                key={i}
+                            >
+
+                                <label htmlFor={`chk${e.seq}`} className='table-check'>
+                                    <input 
+                                        type="checkbox" 
+                                        id={`chk${e.seq}`}
+                                        checked={chkItem.includes(e.seq) ? true : false}
+                                        onChange={(event)=>singleChkHanlder(event,e.seq)}
+                                    />
+                                    <div><BsCheck/></div>
+                                </label>
+
+                                <p>{(i+1) + (limit * (currentPage - 1))}</p>
+
+                                <Link to={`view/${e.seq}`}>{e.board_name}</Link>
+
+                                <p>{e.board_table}</p>
+
+                                <p>{e.main}</p>
+
+                                <p>{e.img}</p>
+
+                                <p>{e.writer}</p>
+                                        
+                                <div className='table-action'>
+                                    <button 
+                                        className='update' 
+                                        onClick={()=>updateHandler(e.seq)}
+                                    ><BiSolidWrench/></button>
+                                    <button 
+                                        className='delete'
+                                        onClick={()=>deleteHandler(e.seq)}
+                                    ><MdOutlineDelete/></button>
+                                </div>
+
+                            </div>
+
+                        ))
+                    :
+                    <p style={{textAlign : "center", padding : "20px 0", borderTop : "1px solid #EEF4F4"}}>데이터가 존재하지 않습니다</p>
+                }
+
+            </div>
+
+            <div className="paging">
+  
+                {
+                    prev > 0 &&
+                    <button 
+                        className='prev'
+                        onClick={()=>{
+                            searchParams.set('page',prev);
+                            setSearchParams(searchParams);
+                        }}
+                    >
+                        <AiOutlineLeft/>
+                    </button>
+                }
+
+                {
+                    paging.map(e=>(
+                        <button 
+                            className={ e == currentPage ? "act" : null} 
+                            key={e}
+                            onClick={()=>{
+                                searchParams.set('page',e);
+                                setSearchParams(searchParams);
+                            }}
+                        >{e}</button>
+                    ))
+                }
+        
+                {
+                    last < totalPage &&
+                    <button 
+                        className='next'
+                        onClick={()=>{
+                            searchParams.set('page',next);
+                            setSearchParams(searchParams);
+                        }}
+                    >
+                        <AiOutlineRight/>
+                    </button>
+                }
+                
+            </div>
+
+            <div className="btn-list">
+                <Button 
+                    color={"color02"}
+                    onClick={()=>{
+                        if(window.confirm('삭제 하시겠습니까?')){
+                          dispatch(multipleDeleteAction(chkItem));
+                          if( searchParams.get('page') >= totalPage){
+                              searchParams.set('page',last-1);
+                              setSearchParams(searchParams);
+                          }
+                        }
+                    }}
+                >선택 삭제</Button>
+                <Button onClick={()=>navigate('write')}>등록</Button>
+            </div>
+
+        </div>
+
     </>
   )
-
 }
-
-
-
-
-
-export default List

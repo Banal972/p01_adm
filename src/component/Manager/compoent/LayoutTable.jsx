@@ -6,7 +6,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import Page from "./Page"
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
-import { delAction } from '../store/menu'
+// import { delAction } from '../store/menu'
 import { deleteAction, updateRank } from '../store/memeber'
 
 function LayoutTable({
@@ -77,7 +77,6 @@ function LayoutTable({
       }
 
     }
-
 
     return (
 
