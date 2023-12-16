@@ -12,9 +12,6 @@ export default function List({
   store // 리덕스 이름
 }) {
 
-    // 테이블 params 가져오기
-    const {table} = useParams();
-
     // 쿼리 스트링
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -25,7 +22,7 @@ export default function List({
     const dispatch = useDispatch();
 
     // 유저 데이터
-    let getData = useSelector(state=>state[store]);
+    const getData = useSelector(state=>state[store]);
 
     const [data,setData] = useState([]);
 

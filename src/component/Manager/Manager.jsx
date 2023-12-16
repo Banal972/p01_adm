@@ -15,17 +15,22 @@ import Footer from './layout/Footer'
 import Setting from './router/Setting/Setting'
 import Log from './router/Log/Log'
 import Main from './router/Main/Main'
-import List from './router/Layout/List'
 import UserWrite from "./router/User/Write"
 import BoardWrite from "./router/Board/Write"
 import Login from './router/Login/Login'
-import TableWrite from "./router/Layout/Write"
 
 // auth 라우터
 import Auth from './auth/Auth'
 
-// 테스트 라우터
+// 유저 라우터
 import UserList from "./router/User/List";
+
+// 테이블 라우터
+import TableList from './router/Table/List'
+import TableWrite from "./router/Table/Write"
+
+// 게시판 관리 라우터
+import BoardList from "./router/Board/List"
 
 
 function Manager() {
@@ -76,7 +81,7 @@ function Manager() {
           {/* 게시판 관리 */}
           <Route path='board'>
 
-            <Route index element={<List store={'tableManager'}/>} />
+            <Route index element={<BoardList store={'tableManager'}/>} />
 
             <Route path='write'>
               <Route index element={<BoardWrite/>}/>
@@ -86,7 +91,7 @@ function Manager() {
             <Route path='view' element={<>뷰 페이지</>}/>
             
             <Route path=':table'>
-              <Route index element = {<List/>} />
+              <Route index element = {<TableList/>} />
               <Route path='write' element={<TableWrite/>}/>
             </Route>
 

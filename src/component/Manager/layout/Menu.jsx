@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import {Link, useLocation} from "react-router-dom"
 import {BiHomeAlt,BiSolidChat,BiUser,BiCalendarAlt,BiBrightness} from "react-icons/bi"
+import { AiOutlinePicture } from "react-icons/ai";
 import { useDispatch, useSelector } from 'react-redux';
 
 function Menu() {
@@ -47,6 +48,9 @@ function Menu() {
         <ul className='gnb'>
             <li>
                 <Link to={'main'} className={loca === "/" ? "act" : "" } ><div className="icon"><BiHomeAlt/></div> 대시보드</Link>
+            </li>
+            <li>
+                <Link className={loca === "user" ? "act" : "" } to={"user"}><div className="icon"><AiOutlinePicture  /></div> 배너관리</Link>
             </li>
             <li>
                 <Link className={loca === "board" ? "act" : "" } to={'board'}><div className="icon"><BiSolidChat/></div> 게시판관리</Link>
