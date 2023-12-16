@@ -1,9 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import {Link, useLocation} from "react-router-dom"
 import {BiHomeAlt,BiSolidChat,BiUser,BiCalendarAlt,BiBrightness} from "react-icons/bi"
-import axios from "axios";
 import { useDispatch, useSelector } from 'react-redux';
-import { inputAction } from '../store/menu';
 
 function Menu() {
 
@@ -23,22 +21,26 @@ function Menu() {
     // 디스패치
     const dispatch = useDispatch();
 
+    // 게시판 데이터
+    const tableManager = useSelector(state=>state.tableManager);
+
     // 메뉴 테이블 가져오기
-    const table = useSelector(state=>state.mm);
+    const [menu,setMenu] = useState([]);
 
     useEffect(()=>{
 
-        axios.get('/api/board/menu')
-        .then(({data})=>{
-            if(data.suc){
-                dispatch(inputAction(data.data));
-            }else{
-                alert(data.msg);
-            }
-        })
-        .catch(err=>console.error(err));
+        console.log(menu);
 
-    },[]);
+        const mapMenu = tableManager.map(e=>{
+            return {
+                board_name : e.board_name,
+                board_table : e.board_table
+            }
+        });
+
+        setMenu(mapMenu);
+
+    },[tableManager]);
 
   return (
     <div className='manager-menu'>
@@ -50,10 +52,10 @@ function Menu() {
                 <Link className={loca === "board" ? "act" : "" } to={'board'}><div className="icon"><BiSolidChat/></div> 게시판관리</Link>
 
                 {
-                    table.length > 0 ?
+                    menu.length > 0 ?
                     <ul className="snb">
                         {
-                            table.map((e,i)=>(
+                            menu.map((e,i)=>(
                                 <li key={i}><Link to={`board/${e.board_table}`} className={loca === `${e.board_table}` ? "act" : "" }>{e.board_name}</Link></li>
                             ))
                         }
