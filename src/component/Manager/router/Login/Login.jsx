@@ -5,6 +5,7 @@ import logo from "../../asset/image/logo.svg";
 import { BsCheck } from "react-icons/bs"
 import { useDispatch, useSelector } from 'react-redux';
 import { addAction } from '../../store/login';
+import { useCookies } from 'react-cookie';
 
 function Login() {
 
@@ -28,6 +29,16 @@ function Login() {
         fun(e.target.value);
     }
 
+    // 쿠키
+    const [cookie,setCookie,removeCookie] = useCookies(['idsave']);
+    const idref = useRef(null);
+
+    useEffect(()=>{
+        if(cookie.idsave){
+            setInputID(cookie.idsave);
+        }
+    },[cookie]);
+
     // 로그인폼
     const onSubmit = (e)=>{
         e.preventDefault();
@@ -49,6 +60,11 @@ function Login() {
             if(chid[0].userPW == inputPW){
 
                 dispath(addAction(chid[0]));
+                if(idref.current.checked){
+                    setCookie('idsave',inputID);
+                }else{
+                    removeCookie('idsave');
+                }
                 alert('로그인이 완료 되었습니다');
 
                 return navigate('main');
@@ -68,7 +84,6 @@ function Login() {
         }
 
     }
-
 
     return (
         <div className='manager-login'>
@@ -99,8 +114,13 @@ function Login() {
                     />
                 </div>
 
-                <label htmlFor="" className='check'>
-                    <input type="checkbox" name="" id="" />
+                <label htmlFor="chk" className='check'>
+                    <input 
+                        type="checkbox" 
+                        id="chk" 
+                        ref={idref}
+                        defaultValue={cookie.idsave ? true : false}
+                    />
                     <div><BsCheck/></div>
                     아이디저장
                 </label>

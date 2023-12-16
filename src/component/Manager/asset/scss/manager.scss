@@ -36,6 +36,7 @@
         input {
             display: none;
     
+            &:checked + div,
             &[checked] + div{
                 svg {
                     display: block;
@@ -44,9 +45,9 @@
     
         }
         div {
-            width: 15px; height: 15px; border: 1px solid #CEEAEA; margin: 0 auto; border-radius: 0; margin-right: 5px; background: #fff;
+            width: 15px; height: 15px; border: 1px solid #CEEAEA; margin: 0 auto; border-radius: 0; margin-right: 5px; background: #fff; position: relative;
             svg {
-                display: none;
+                display: none; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
             }
         }
     }
