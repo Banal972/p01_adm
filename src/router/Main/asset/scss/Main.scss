@@ -1,0 +1,116 @@
+@import "./Layout/Layout.scss";
+
+._wrap {
+    width: 95%; margin: 0 auto;
+}
+
+.go_admin {
+    position: fixed; top: 10px; left: 10px; z-index: 999; width: 80px; border-radius: 1000px; background: #fff; cursor: pointer; box-shadow: 1.5px 2px 5px rgba($color: #000000, $alpha: 0.5);
+    p {
+        position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-weight: bold; width: 90%; text-align: center; line-height: 1.3; font-size: 14px;
+    }
+    &::after {
+        content: ''; display: block; padding-bottom: 100%;
+    }
+}
+
+._main {
+
+    .visual{
+        height: 650px;
+
+        .swiper-slide {
+            position: relative;
+
+            dl {
+                position: absolute; top: 50%; transform: translate(0,-50%); left: 5%;
+                font-size: 48px; font-weight: bold;
+                dd {
+                    font-size: 0.5em; margin-top: 20/48*1em;
+                }
+            }
+
+        }
+
+    }
+
+    .sec {
+        padding: 150px 0;
+        .board {
+            + .board {
+                margin-top: 80px;
+            }
+            .tit {
+                text-align: center; font-weight: bold; font-size: 20px;
+            }
+    
+            .table {
+                display: flex; margin: 75px -25px 0;
+    
+                > div {
+                    flex: 1; margin: 0 25px;
+                }
+    
+                .name {
+                    font-weight: bold; font-size: 24px;
+                }
+    
+                ul {
+                    margin-top: 15px;
+                    li {
+                        display: flex; align-items: center; justify-content: space-between;
+                        + li {
+                            margin-top: 5px; padding-top: 5px; border-top: 1px solid #ccc;
+                        }
+                        a {
+                            display: flex; align-items: center; justify-content: space-between; flex: 1;
+                        }
+    
+                        h4 {
+                            font-weight: 500; font-size: 18px;
+                        }
+                        .content {
+                            font-size: 16px; margin-left: 20/16*1em; flex: 1;
+                        }
+                        .date {
+                            font-size: 14px; color: #ccc;
+                        }
+    
+                    }
+                }
+    
+            }
+    
+        }
+    }
+
+    .inqury {
+        background: #eee; padding: 50px 0;
+
+        .tit {
+            font-size: 24px; text-align: center; font-weight: bold;
+        }
+        
+        label {
+            margin-top: 50px; display: block; margin-bottom: 5px;
+            ~ label {
+                margin-top: 25px;
+            }
+        }
+        
+        input {
+            height: 35px; width: 100%; border-radius: 5px; border: 1px solid #ccc; padding: 0 1em; box-sizing: border-box;
+        }
+
+        textarea {
+            height: 200px; border-radius: 5px; border: 1px solid #ccc; resize: none; width: 100%; padding: 1em; box-sizing: border-box;
+        }
+
+        button {
+            width: 250px; height: 50px; background: #000; margin: 0 auto; display: block; margin: 50px auto 0; color: #fff; border-radius: 10px;
+        }
+
+    }
+
+
+}
