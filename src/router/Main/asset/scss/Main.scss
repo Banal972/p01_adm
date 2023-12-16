@@ -2,6 +2,9 @@
 
 ._wrap {
     width: 95%; margin: 0 auto;
+    &[max="820"]{
+        max-width: 820px;
+    }
 }
 
 .go_admin {
@@ -12,6 +15,10 @@
     &::after {
         content: ''; display: block; padding-bottom: 100%;
     }
+}
+
+textarea {
+    font-family: "Pretendard";
 }
 
 ._main {
@@ -38,14 +45,14 @@
         padding: 150px 0;
         .board {
             + .board {
-                margin-top: 80px;
+                margin-top: 100px;
             }
             .tit {
                 text-align: center; font-weight: bold; font-size: 20px;
             }
     
             .table {
-                display: flex; margin: 75px -25px 0;
+                display: flex; margin: 55px -25px 0;
     
                 > div {
                     flex: 1; margin: 0 25px;
@@ -60,7 +67,7 @@
                     li {
                         display: flex; align-items: center; justify-content: space-between;
                         + li {
-                            margin-top: 5px; padding-top: 5px; border-top: 1px solid #ccc;
+                            margin-top: 10px; padding-top: 10px; border-top: 1px solid #ccc;
                         }
                         a {
                             display: flex; align-items: center; justify-content: space-between; flex: 1;
@@ -103,7 +110,7 @@
         }
 
         textarea {
-            height: 200px; border-radius: 5px; border: 1px solid #ccc; resize: none; width: 100%; padding: 1em; box-sizing: border-box;
+            height: 200px; border-radius: 5px; border: 1px solid #ccc; resize: none; width: 100%; padding: 1em; box-sizing: border-box; 
         }
 
         button {

@@ -6,6 +6,7 @@ import moment from "moment"
 // 컴포넌트
 import Cal from '../../compoent/Cal'
 import MainTable from '../../compoent/MainTable'
+import { useSelector } from 'react-redux'
 
 function Main() {
 
@@ -17,22 +18,33 @@ function Main() {
   const [startDate,setStartDate] = useState(new Date(week));
   const [endDate,setEndDate] = useState(new Date());
 
+  const log = useSelector(state=>state.logManager);
+  
   useEffect(()=>{
 
-    axios.get('/api/log/bar',{
-      params : {
-        startDate : moment(startDate).format("YYYY.MM.DD"),
-        endDate : moment(endDate).format("YYYY.MM.DD"),
+    const start = moment(startDate).format("YYYYMMDD");
+    const end = moment(endDate).format("YYYYMMDD");
+
+    const filter = log.filter(e=> moment(e.wDate).format("YYYYMMDD") >= start && moment(e.wDate).format("YYYYMMDD") <= end);
+
+    const groupData = {};
+    filter.forEach(e=>{
+      const data = e.wDate;
+      if(!groupData[data]){
+        groupData[data] = 1;
+      }else{
+        groupData[data]++;
       }
-    })
-    .then(res=>{
-      const data = res.data;
-      setChar(data);
-    })
-    .catch(err=>{
-      console.error(err);
     });
 
+    const changeData = Object.keys(groupData).map(e=>{
+      return {
+        date : e,
+        접속인원 : groupData[e]
+      }
+    });
+
+    setChar(changeData);
 
   },[startDate,endDate]);
 
@@ -42,7 +54,7 @@ function Main() {
 
   useEffect(()=>{
 
-    axios.get('/api/board/dash')
+    /* axios.get('/api/board/dash')
     .then(({data})=>{
 
       if(data.suc){
@@ -52,7 +64,7 @@ function Main() {
       }
 
     })
-    .catch(err=>console.error(err));
+    .catch(err=>console.error(err)); */
 
   },[]);
 

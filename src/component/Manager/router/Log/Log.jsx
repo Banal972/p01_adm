@@ -7,6 +7,7 @@ import axios from 'axios'
 // 컴포넌트
 import Cal from '../../compoent/Cal'
 import LayoutTable from '../../compoent/LayoutTable'
+import { useSelector } from 'react-redux'
 
 function Log() {
 
@@ -82,27 +83,41 @@ function WeekBorad({start,end}){
 
     const [data,setData] = useState([]);
   
+    const log = useSelector(state=>state.logManager);
+  
     useEffect(()=>{
-  
-      axios.get('/api/log',{
-        params : {
-          startDate : moment(start).format("YYYY.MM.DD"),
-          endDate : moment(end).format("YYYY.MM.DD"),
+
+      const startDate = moment(start).format("YYYYMMDD");
+      const endDate = moment(end).format("YYYYMMDD");
+
+      const filter = log.filter(e=> moment(e.wDate).format("YYYYMMDD") >= startDate && moment(e.wDate).format("YYYYMMDD") <= endDate);
+
+      const groupData = {};
+      filter.forEach(e=>{
+        const data = e.wDate;
+        if(!groupData[data]){
+          groupData[data] = 1;
+        }else{
+          groupData[data]++;
         }
-      })
-      .then(({data})=>{
-        setData(data);
-      })
-      .catch(err=>{
-        console.error(err);
       });
-  
+
+      const changeData = Object.keys(groupData).map(e=>{
+        return {
+          date : e,
+          접속인원 : groupData[e]
+        }
+      });
+
+      setData(changeData);
   
     },[start,end]);
     
     return (
-  
-      <LayoutTable
+      <></>
+    )
+
+    /* {<LayoutTable
         head={[{
           text : '날짜',
           value : "date"
@@ -111,9 +126,7 @@ function WeekBorad({start,end}){
           value : "amount"
         }]}
         dataset={data}
-      />
-  
-    )
+      /> }*/
   
 }
 
@@ -121,29 +134,40 @@ function WeekBorad({start,end}){
 function BarGraph({start,end}){
 
     const [graph,setGraph] = useState([]);
+
+    const log = useSelector(state=>state.logManager);
   
     useEffect(()=>{
-  
-      axios.get('/api/log/bar',{
-        params : {
-          startDate : moment(start).format("YYYY.MM.DD"),
-          endDate : moment(end).format("YYYY.MM.DD"),
+
+      const startDate = moment(start).format("YYYYMMDD");
+      const endDate = moment(end).format("YYYYMMDD");
+
+      const filter = log.filter(e=> moment(e.wDate).format("YYYYMMDD") >= startDate && moment(e.wDate).format("YYYYMMDD") <= endDate);
+
+      const groupData = {};
+      filter.forEach(e=>{
+        const data = e.wDate;
+        if(!groupData[data]){
+          groupData[data] = 1;
+        }else{
+          groupData[data]++;
         }
-      })
-      .then(res=>{
-        const data = res.data
-        setGraph(data);
-      })
-      .catch(err=>{
-        console.error(err);
       });
-  
+
+      const changeData = Object.keys(groupData).map(e=>{
+        return {
+          date : e,
+          접속인원 : groupData[e]
+        }
+      });
+
+      setGraph(changeData);
   
     },[start,end]);
   
     return (
       <>
-        { graph.length > 0 && 
+        { graph.length > 0 ?
           <div style={{ width: '100%', height: '350px', marginBottom:45 }}>
             <ResponsiveBar
       
@@ -196,6 +220,7 @@ function BarGraph({start,end}){
       
             />
           </div>
+          : <p>데이터가 존재하지 않습니다</p>
         }
       </>
     )
@@ -207,36 +232,47 @@ function BroswerGraph({start,end}){
 
     const [graph,setGraph] = useState([]);
   
+    const log = useSelector(state=>state.logManager);
+  
     useEffect(()=>{
-  
-      axios.get('/api/log/browser',{
-        params : {
-          startDate : moment(start).format("YYYY.MM.DD"),
-          endDate : moment(end).format("YYYY.MM.DD"),
+
+      const startDate = moment(start).format("YYYYMMDD");
+      const endDate = moment(end).format("YYYYMMDD");
+
+      const filter = log.filter(e=> moment(e.wDate).format("YYYYMMDD") >= startDate && moment(e.wDate).format("YYYYMMDD") <= endDate);
+
+      const groupData = {};
+      filter.forEach(e=>{
+        const broswer = e.broswer;
+        if(!groupData[broswer]){
+          groupData[broswer] = 1;
+        }else{
+          groupData[broswer]++;
         }
-      })
-      .then(res=>{
-        const data = res.data
-        setGraph(data);
-      })
-      .catch(err=>{
-        console.error(err);
       });
-  
+
+      const changeData = Object.keys(groupData).map(e=>{
+        return {
+          id : e,
+          label : e,
+          value : groupData[e]
+        }
+      });
+
+      setGraph(changeData);
   
     },[start,end]);
   
     return (
       <>
-        { graph.length > 0 &&
+        { graph.length > 0 ?
           <div className="pie">
   
             <div style={{width:"100%",height:250}}>
       
               <ResponsivePie
-      
+              
                 data={graph}
-      
                 animate={true}
                 motionConfig={'gentle'}
                 transitionMode='innerRadius'
@@ -259,6 +295,7 @@ function BroswerGraph({start,end}){
             <p>브라우저 ({moment(start).format("YYYY.MM.DD")} ~ {moment(end).format("YYYY.MM.DD")})</p>
       
           </div>
+          : <p>데이터가 존재하지 않습니다</p>
         }
       </>
     )
@@ -270,30 +307,42 @@ function DeviceGraph({start,end}){
   
     const [graph,setGraph] = useState([]);
 
+    const log = useSelector(state=>state.logManager);
+  
     useEffect(()=>{
 
-        axios.get('/api/log/device',{
-          params : {
-              startDate : moment(start).format("YYYY.MM.DD"),
-              endDate : moment(end).format("YYYY.MM.DD"),
-          }
-        })
-        .then(res=>{
-          const data = res.data;
-          setGraph(data);
-        })
-        .catch(err=>{
-          console.error(err);
-        });
+      const startDate = moment(start).format("YYYYMMDD");
+      const endDate = moment(end).format("YYYYMMDD");
 
+      const filter = log.filter(e=> moment(e.wDate).format("YYYYMMDD") >= startDate && moment(e.wDate).format("YYYYMMDD") <= endDate);
 
+      const groupData = {};
+      filter.forEach(e=>{
+        const device = e.device;
+        if(!groupData[device]){
+          groupData[device] = 0;
+        }
+        groupData[device] ++;
+      });
+
+      const changeData = Object.keys(groupData).map(e=>{
+        return {
+          id : e,
+          label : e,
+          value : groupData[e]
+        }
+      });
+
+      setGraph(changeData);
+  
     },[start,end]);
+
 
     return (
         <>
         
           {
-            graph.length > 0 &&
+            graph.length > 0 ?
             <div className="pie">
 
               <div style={{width:"100%",height:250}}>
@@ -321,6 +370,7 @@ function DeviceGraph({start,end}){
               <p>디바이스 ({moment(start).format("YYYY.MM.DD")} ~ {moment(end).format("YYYY.MM.DD")})</p>
 
             </div>
+            : <p>데이터가 존재하지 않습니다</p>
           }
         
         </>

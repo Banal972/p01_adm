@@ -140,7 +140,7 @@ function Main() {
 
         <form>
           <div className="inqury">
-            <div className="_wrap">
+            <div className="_wrap" max="820">
               <h4 className='tit'>문의하기</h4>
 
               <label htmlFor="">성함</label>
