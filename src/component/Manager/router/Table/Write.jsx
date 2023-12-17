@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import {useNavigate, useParams} from "react-router-dom"
-import axios from "axios";
 
 // 컴포넌트
 import Button from "../../compoent/Button";
@@ -67,11 +66,5 @@ function Write() {
   )
 
 }
-
-
-
-
-
-
 
 export default Write

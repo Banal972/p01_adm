@@ -26,11 +26,18 @@ import Auth from './auth/Auth'
 import UserList from "./router/User/List";
 
 // 테이블 라우터
-import TableList from './router/Table/List'
-import TableWrite from "./router/Table/Write"
+import TableList from './router/Table/List';
+import TableWrite from "./router/Table/Write";
 
 // 게시판 관리 라우터
-import BoardList from "./router/Board/List"
+import BoardList from "./router/Board/List";
+
+// 배너 관리 라우터
+import BannerList from "./router/Banner/List";
+import BannerWrtie from "./router/Banner/Write";
+
+// 온라인 문의 라우터
+import InquryList from "./router/Inqury/List";
 
 
 function Manager() {
@@ -78,6 +85,13 @@ function Manager() {
           {/* 대시보드 */}
           <Route path='main' element={<Main/>}/>
 
+          <Route path='banner'>
+            <Route index element={<BannerList/>}/>
+            <Route path='write' element={<BannerWrtie/>}>
+              <Route path=':seq'/>
+            </Route>
+          </Route>
+
           {/* 게시판 관리 */}
           <Route path='board'>
 
@@ -110,6 +124,9 @@ function Manager() {
             <Route path='view' element={<>뷰 페이지</>}/>
 
           </Route>
+
+          {/* 온라인 문의 */}
+          <Route path='inqury' element={<InquryList/>}></Route>
 
           {/* 접속 현황 */}
           <Route path='log' element={<Log/>}></Route>

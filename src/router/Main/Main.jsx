@@ -14,6 +14,7 @@ function Main() {
 
   const navigate = useNavigate();
 
+  // 유저 가져오기
   const member = useSelector(state=>state.member);
   const [memberData,setMemberData] = useState([]);
 
@@ -21,6 +22,16 @@ function Main() {
     const splice = member.slice(0,10);
     setMemberData(splice);
   },[]);
+
+  // 배너 가져오기
+  const bannerManager = useSelector(state=>state.bannerManager);
+  const [banner,setBanner] = useState([]);
+  useEffect(()=>{
+
+    const filter = bannerManager.filter(e=>e.main == "Y");
+    setBanner(filter);
+
+  },[bannerManager]);
 
   return (
     <>
@@ -34,24 +45,24 @@ function Main() {
       <div className="_main">
 
         <Swiper className='visual'>
-          <SwiperSlide style={{"background" : "#acf"}}>
-            <dl>
-              <dt>데모사이트1</dt>
-              <dd>데모사이트 입니다</dd>
-            </dl>
-          </SwiperSlide>
-          <SwiperSlide style={{"background" : "#ccf"}}>
-            <dl>
-              <dt>데모사이트2</dt>
-              <dd>데모사이트 입니다</dd>
-            </dl>
-          </SwiperSlide>
-          <SwiperSlide style={{"background" : "#dcf"}}>
-            <dl>
-              <dt>데모사이트3</dt>
-              <dd>데모사이트 입니다</dd>
-            </dl>
-          </SwiperSlide>
+          {
+            banner.length > 0 ?
+              banner.map((e,i)=>(
+                <SwiperSlide key={i} style={{backgroundImage : `url(${e.imgURL})`}}>
+                  <dl>
+                    <dt>{e.title}</dt>
+                    <dd>{e.content}</dd>
+                  </dl>
+                </SwiperSlide>
+              ))
+              :
+              <SwiperSlide style={{backgroundColor : 'tomato'}}>
+                <dl>
+                  <dt>베너를 등록해주세요</dt>
+                  <dd>베너를 등록해주세요1</dd>
+                </dl>
+              </SwiperSlide>
+          }
         </Swiper>
 
 
