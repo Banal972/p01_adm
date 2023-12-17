@@ -185,7 +185,7 @@ export default function List() {
 
             <div className="table-grid">
         
-                <div className="col" style={{gridTemplateColumns: "50px 120px 200px repeat(4,1fr) 150px"}}>
+                <div className="col" style={{gridTemplateColumns: "50px 120px 200px repeat(5,1fr) 150px"}}>
 
                     <label htmlFor="allchk" className='table-check'>
                         <input 
@@ -206,8 +206,9 @@ export default function List() {
                     <p>이미지</p>
                     <p>제목</p>
                     <p>내용</p>
-                    <p>메인출력</p>
+                    <p>메인 출력</p>
                     <p>작성자</p>
+                    <p>등록 날짜</p>
                     <p>Action</p>
 
                 </div>
@@ -218,7 +219,7 @@ export default function List() {
 
                             <div 
                                 className="col" 
-                                style={{gridTemplateColumns: "50px 120px 200px repeat(4,1fr) 150px"}}
+                                style={{gridTemplateColumns: "50px 120px 200px repeat(5,1fr) 150px"}}
                                 key={i}
                             >
 
@@ -243,6 +244,8 @@ export default function List() {
                                 <p>{e.main}</p>
 
                                 <p>{e.writer}</p>
+
+                                <p>{e.wtDate}</p>
                                         
                                 <div className='table-action'>
                                     <button 

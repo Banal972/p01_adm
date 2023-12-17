@@ -35,7 +35,10 @@ export const bannerManager = createSlice({
     reducers : {
         addAction(state,action){
             // seq 마지막번호부터 1씩 상승
-            const seq = Number(state[state.length-1].seq) + 1;
+            let seq = 1;
+            if(state.length > 0){
+                seq = Number(state[state.length-1].seq + 1);
+            }
 
             const push = {
                 seq,
