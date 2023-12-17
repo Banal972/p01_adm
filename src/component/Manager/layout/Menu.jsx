@@ -30,9 +30,7 @@ function Menu() {
     const [menu,setMenu] = useState([]);
 
     useEffect(()=>{
-
-        console.log(menu);
-
+        
         const mapMenu = tableManager.map(e=>{
             return {
                 board_name : e.board_name,

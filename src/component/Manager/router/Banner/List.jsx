@@ -103,8 +103,6 @@ export default function List() {
         const type = searchParams.get('type') || "";
         const search = searchParams.get('search') || "";
 
-        console.log(getData);
-
         const filter = getData.filter(e=>{
             if(type == ""){
                 return e['title'].includes(search);

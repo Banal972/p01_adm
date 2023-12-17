@@ -44,29 +44,35 @@ function Main() {
       }
     });
 
-    setChar(changeData);
+    // 정렬
+    const sort =  changeData.sort((a,b)=>{
+      
+      if(a.date > b.date){
+        return 1;
+      }
+      if(a.date < b.date){
+        return -1;
+      }
+      return 0;
+
+    });
+    
+    setChar(sort);
 
   },[startDate,endDate]);
 
-  // 게시판 불러오기
+  
 
+  // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 게시판 불러오기
+  const tableManager = useSelector(state=>state.tableManager);
   const [getBoard,setGetBoard] = useState([]);
 
   useEffect(()=>{
 
-    /* axios.get('/api/board/dash')
-    .then(({data})=>{
+    const filter = tableManager.filter(e=>e.main == 'Y');
+    setGetBoard(filter);
 
-      if(data.suc){
-        setGetBoard(data.data);
-      }else{
-        alert(data.msg);
-      }
-
-    })
-    .catch(err=>console.error(err)); */
-
-  },[]);
+  },[tableManager]);
 
   return (
     <div className="dashboard">
@@ -166,138 +172,10 @@ function Main() {
 
         </div>
 
-        {/* <Widget/> */}
-
       </div>
 
     </div>
   )
 }
-
-// 위젯
-function Widget(){
-
-    const [widget,setWidget] = useState({});
-    const [wid,setWid] = useState(false);
-  
-    useEffect(()=>{
-  
-      axios.get('/api/site')
-      .then(res=>{
-  
-        const {data} = res;
-  
-        setWidget(data[0]);
-  
-        for(const key in data[0]){
-  
-          if(data[0][key] === 'y'){
-            setWid(true);
-          }
-    
-        }
-  
-      })
-      .catch(err=>{
-        console.error(err);
-      });
-  
-    },[]);
-  
-    return (
-  
-      <>
-        {
-          wid &&
-          <div className="widget">
-            
-            {
-              widget.weather === 'y' &&
-              <div className="weather">
-                <p className='tit'>날씨</p>
-                <Weather/>
-              </div>
-            }
-      
-            {
-              widget.calender === 'y' &&
-  
-              <div className="weather">
-                <p className='tit'>위젯</p>
-                <div style={{height:300,width:300,background:"#fff"}}></div>
-              </div>
-      
-            }
-      
-          </div>
-        }
-      </>
-  
-    )
-  
-}
-
-
-//날씨
-function Weather(){
-
-    const [temp,setTemp] = useState(0);
-    const [temp_max,setTemp_max] = useState(0);
-    const [temp_min,setTemp_min] = useState(0);
-    const [humidity,setHumidity] = useState(0);
-    const [desc,setDesc] = useState('');
-    const [icon,setIcon] = useState('');
-    const [loading,setLoading] = useState(true);
-  
-    useEffect(()=>{
-  
-      const cityName = 'Incheon';
-      const apiKey = process.env.REACT_APP_WEATHER_KEY;
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
-  
-      //위에서 만든 상태 변수에 값을 전달
-      axios
-        .get(url)
-        .then((responseData) => {
-          // console.log(responseData);
-          const data = responseData.data;
-          
-          setTemp(data.main.temp);
-          setTemp_max(data.main.temp_max);
-          setTemp_min(data.main.temp_min);
-          setHumidity(data.main.humidity);
-          setDesc(data.weather[0].description);
-          setIcon(data.weather[0].icon);
-          setLoading(false);
-  
-        })
-        .catch((err) => console.log(err));
-  
-    },[]);
-  
-    const imgSrc = `https://openweathermap.com/img/w/${icon}.png`;
-  
-    if(loading){
-      return <p>Loading</p>;
-    }else{
-  
-      return (
-  
-        <>
-          {temp}
-          {temp_max}
-          {temp_min}
-          {humidity}
-          {desc}
-        </>
-  
-      )
-  
-    }
-  
-  
-}
-
-//캘린더
 
 export default Main

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
 function MainTable({tit,table}) {
@@ -7,21 +6,6 @@ function MainTable({tit,table}) {
     const [news,setNews] = useState([]);
 
     useEffect(()=>{
-
-        axios.get('/api/board/dstable',{
-            params : {
-                table : table
-            }
-        })
-        .then(({data})=>{
-            if(data.suc){
-                setDataset(data.data.tb);
-                setNews(data.data.new);
-            }else{
-                alert(data.msg);
-            }
-        })
-        .catch(err=>console.error(err));
 
     },[]);
 

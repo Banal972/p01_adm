@@ -205,7 +205,7 @@ export default function List({
                     <p>게시판 이름</p>
                     <p>테이블 이름</p>
                     <p>메인 출력</p>
-                    <p>이미지 출력</p>
+                    <p>이미지 게시판</p>
                     <p>작성자</p>
                     <p>Action</p>
 

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
+import moment from "moment";
 
 export const tableManager = createSlice({
     name : "tableManager",
@@ -9,7 +10,8 @@ export const tableManager = createSlice({
             board_table : "board_one", // 테이블 이름
             main : 'Y', // 메인 출력
             img : 'Y', // 이미지 가능
-            writer : '어드민'
+            writer : '어드민',
+            wData : moment(new Date()).format('YYYY-MM-DD')
         },
         {
             seq : 2,
@@ -17,14 +19,15 @@ export const tableManager = createSlice({
             board_table : "board_two", // 테이블 이름
             main : 'Y', // 메인 출력
             img : 'N', // 이미지 가능
-            writer : '어드민'
+            writer : '어드민',
+            wData : moment(new Date()).format('YYYY-MM-DD')
         }
     ],
     reducers : {
         addAction(state,action){ // 테이블생성
             // seq 마지막번호부터 1씩 상승
             let seq = 1;
-            if(state.length > 0) seq = state[state.length-1].seq + 1;
+            if(state.length > 0) seq = Number(state[state.length-1].seq + 1);
 
             const push = {
                 seq,
@@ -32,6 +35,12 @@ export const tableManager = createSlice({
             }
 
             state.push(push);
+        },
+        updatedAction(state,action){
+            const rs = state.findIndex(e=>e.seq == action.payload.seq);
+            if(rs > -1){
+                state[rs] = action.payload;
+            }
         },
         deleteAction(state,action){
 
@@ -52,6 +61,6 @@ export const tableManager = createSlice({
     }
 });
 
-export const {addAction,deleteAction,multipleDeleteAction} = tableManager.actions;
+export const {addAction,deleteAction,multipleDeleteAction,updatedAction} = tableManager.actions;
 
 export default tableManager.reducer;

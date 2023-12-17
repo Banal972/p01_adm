@@ -368,7 +368,7 @@
     // 테이블 레이아웃
     .table-grid {
         .col {
-            display: grid; text-align: center; border-top: 1px solid #EEF4F4; padding: 10px 0; font-size: 14px; font-weight: 500; align-items: center;
+            display: grid; text-align: center; border-top: 1px solid #EEF4F4; padding: 15px 0; font-size: 14px; font-weight: 500; align-items: center;
             &:last-child {
                 border-bottom: 1px solid #EEF4F4;
             }

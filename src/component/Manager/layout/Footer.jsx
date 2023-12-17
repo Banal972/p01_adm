@@ -3,7 +3,7 @@ import React from 'react'
 function Footer() {
   return (
     <footer className='manager-footer'>
-        Copyright(C) 2023. Kim Ji Yu's (banal). Al rights reserved.
+        CopyRight(C) 2023. Kim Ji Yu's (Banal). Al rights reserved.
     </footer>
   )
 }

@@ -1,12 +1,18 @@
 import {useState,useEffect} from "react"
 import {useNavigate, useParams} from "react-router-dom"
-import axios from "axios";
 import {BsCheck} from "react-icons/bs"
+
+// 리덕스
+import { useDispatch, useSelector } from "react-redux";
+
+// 테이블
+import { addAction, updatedAction } from "../../store/table";
+
+// 날짜
+import moment from "moment";
 
 // 컴포넌트
 import Button from "../../compoent/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { addAction } from "../../store/table";
 
 function Write() {
   
@@ -34,7 +40,8 @@ function Write() {
         board_table : "",
         writer : loginMember.nickName,
         main : "N",
-        img : "N"
+        img : "N",
+        wData : moment(new Date()).format('YYYY-MM-DD')
     });
 
     // 파라미터가 있을경우 데이터 추가
@@ -51,7 +58,8 @@ function Write() {
                     board_table : filter.board_table,
                     writer : filter.writer,
                     main : filter.main,
-                    img : filter.img
+                    img : filter.img,
+                    wData : filter.wData
                 }
             ));
 
@@ -100,49 +108,60 @@ function Write() {
                     img : 'Y'
                 }));
             break;
+            case "normal" :
+                setInputData(prev=>({
+                    ...prev,
+                    img : 'N'
+                }));
+            break;
         }
     }
 
-    // 등록버튼
-    const createHandler = ()=>{
+    
+    // 수정
+    const updateHandler = ()=>{
 
-        if(seq){
+        if(window.confirm('수정 하시겠습니까?')){
 
-            if(window.confirm('수정 하시겠습니까?')){
+            const seq = Number(seq);
 
-                // dispatch(addAction())
-
-                /* axios.put('/api/board/create',inputData)
-                .then(({data})=>{
-                    if(data.suc){
-                        alert(data.msg);
-                        navigate('/manager/board');
-                    }else{
-                        alert(data.msg);
-                    }
-                })
-                .catch(err=>console.log(err)); */
-
+            const push = {
+                seq,
+                ...inputData
             }
 
-        }else {
-
-            if(window.confirm('등록 하시겠습니까?')){
-
-                dispatch(addAction(inputData));
-                navigate('/manager/board');
-
-            }
+            dispatch(updatedAction(push));
+            return navigate(-1);
 
         }
-        
+
+    }
+
+
+    // 등록
+    const submitHandler = ()=>{
+
+        if(window.confirm('등록 하시겠습니까?')){
+
+            dispatch(addAction(inputData));
+            return navigate(-1);
+
+        }
+
     }
 
     return (
         <div className="layout">
 
             <label htmlFor="dash" className='table-check' style={{marginBottom : 25}}>
-                <input type="checkbox" id="dash" value={inputData.main} defaultChecked={inputData.main === 'Y' ? true : false} onClick={checkHandler} />
+                <input 
+                    type="checkbox" 
+                    id="dash" 
+                    value={inputData.main} 
+                    checked={inputData.main === 'Y' ? true : false}
+                    readOnly
+                    onClick={checkHandler} 
+                />
                 <div><BsCheck/></div> 대시보드 메인 등록
             </label>
 
@@ -194,9 +213,9 @@ function Write() {
                 <Button color={"color01"} onClick={(e)=>navigate(-1)}>취소</Button>
                 {
                     seq ?
-                    <Button color={"color02"} onClick={createHandler}>수정</Button>
+                    <Button color={"color02"} onClick={updateHandler}>수정</Button>
                     :
-                    <Button onClick={createHandler}>등록</Button>
+                    <Button onClick={submitHandler}>등록</Button>
                 }
 
             </div>

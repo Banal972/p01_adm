@@ -38,6 +38,7 @@ import BannerWrtie from "./router/Banner/Write";
 
 // 온라인 문의 라우터
 import InquryList from "./router/Inqury/List";
+import InquryWrite from "./router/Inqury/Write";
 
 
 function Manager() {
@@ -50,7 +51,7 @@ function Manager() {
       <div className="go_admin" onClick={()=>{
         navigate('/');
       }}>
-        <p>메인페이지 <br/>로 가기</p>
+        <p>메인<br/> 페이지 로<br/> 가기</p>
       </div>
 
       <Routes>
@@ -61,22 +62,14 @@ function Manager() {
 
           <Auth>
             <>
-            
               <Header/>
-
               <div className="manger-main">
                 <Menu/>
-
                 <div className="back-box">
-
                   <Outlet/>
-
                 </div>
-
               </div>
-
               <Footer/>
-
             </>
           </Auth>
 
@@ -126,7 +119,12 @@ function Manager() {
           </Route>
 
           {/* 온라인 문의 */}
-          <Route path='inqury' element={<InquryList/>}></Route>
+          <Route path='inqury'>
+            <Route index element={<InquryList/>}></Route>
+            <Route path='write'>
+              <Route path=':seq' element={<InquryWrite/>}></Route>
+            </Route>
+          </Route>
 
           {/* 접속 현황 */}
           <Route path='log' element={<Log/>}></Route>

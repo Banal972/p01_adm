@@ -219,7 +219,7 @@ function Write() {
 
         <div className="btn-list">
 
-            <Button color={"color01"}>취소</Button>
+            <Button color={"color01"} onClick={()=>navigate(-1)}>취소</Button>
             {
                 seq ?
                 <Button onClick={updateHandler}>수정</Button>
