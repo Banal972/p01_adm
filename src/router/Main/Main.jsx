@@ -17,14 +17,6 @@ function Main() {
 
   const navigate = useNavigate();
 
-  // 유저 가져오기
-  const member = useSelector(state=>state.member);
-  const [memberData,setMemberData] = useState([]);
-
-  useEffect(()=>{
-    const splice = member.slice(0,10);
-    setMemberData(splice);
-  },[]);
 
   // 배너 가져오기
   const bannerManager = useSelector(state=>state.bannerManager);
@@ -36,11 +28,52 @@ function Main() {
 
   },[bannerManager]);
 
+  // 등록한 게시판 2개 가져오기
+  const tableManager = useSelector(state=>state.tableManager);
+  const boardManager = useSelector(state=>state.boardManager);
+  const [boardSlice,setBoardSlice] = useState([]);
+  useEffect(()=>{
+
+    //게시판 2개 자르기
+    const slice = boardManager.slice(0,2);
+
+    //테이블매니저랑 비교해서 이름 가져오기
+    const getName = tableManager.filter((e,i)=>e.board_table == slice[i].board_table);
+    
+    // 2개 조합
+    const newObject = [];
+    getName.forEach((e,i)=>{
+      
+      const name = e.board_name;
+
+      const slc = slice[i].data.slice(0,5);
+
+      newObject.push({
+        name,
+        data : slc
+      })
+
+    });
+
+    //게시판 출력
+    setBoardSlice(newObject);
+
+  },[tableManager,boardManager]);
+  
+
+  // 유저 가져오기
+  const member = useSelector(state=>state.member);
+  const [memberData,setMemberData] = useState([]);
+  useEffect(()=>{
+    const splice = member.slice(0,5);
+    setMemberData(splice);
+  },[member]);
+
   // 문의 게시글
   const inqury = useSelector(state=>state.inqury);
   const [inquryData,setInquryData] = useState([]);
   useEffect(()=>{
-    const splice = inqury.slice(0,10);
+    const splice = inqury.slice(0,5);
     setInquryData(splice);
   },[inqury]);
 
@@ -83,38 +116,28 @@ function Main() {
               <h2 className="tit">등록한 게시판</h2>
 
               <div className='table'>
-                <div className='lbx'>
-                  <div className="name">게시판1</div>
-                  <ul>
-                    {
-                      [0,1,2,3,4,5].map(e=>(
-                        <li key={e}>
-                          <Link to={'/'}>
-                            <h4>제목</h4>
-                            <p className='content'>내용내용내용내용내용내용내용내용내용</p>
-                            <p className='date'>2020.10.11</p>
-                          </Link>
-                        </li>
-                      ))
-                    }
-                  </ul>
-                </div>
-                <div className='rbx'>
-                  <div className="name">게시판2</div>
-                  <ul>
-                    {
-                      [0,1,2,3,4,5].map(e=>(
-                        <li key={e}>
-                          <Link to={'/'}>
-                            <h4>제목</h4>
-                            <p className='content'>내용내용내용내용내용내용내용내용내용</p>
-                            <p className='date'>2020.10.11</p>
-                          </Link>
-                        </li>
-                      ))
-                    }
-                  </ul>
-                </div>
+
+                {
+                  boardSlice.map((e,i)=>(
+                    <div className={i == 0 ? "lbx" : "rbx"}>
+                      <div className="name">{e.name}</div>
+                      <ul>
+                        {
+                          e.data.map((a,i)=>(
+                            <li key={i}>
+                              <Link to={'/'}>
+                                <h4>{a.title}</h4>
+                                <p className='content'>{a.content}</p>
+                                <p className='date'>{a.wDate}</p>
+                              </Link>
+                            </li>
+                          ))
+                        }
+                      </ul>
+                    </div>
+                  ))
+                }
+                
               </div>
 
             </div>
@@ -130,8 +153,8 @@ function Main() {
                   <div className="name">유저</div>
                   <ul>
                     {
-                      memberData.map(e=>(
-                        <li key={e}>
+                      memberData.map((e,i)=>(
+                        <li key={i}>
                           <h4>{e.userID}</h4>
                           <p className='date'>{e.wtDate}</p>
                         </li>

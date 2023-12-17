@@ -474,7 +474,7 @@
             display: flex; align-items: flex-start;
     
             .layout {
-                flex: 1;
+                flex: 1; min-width: 0;
     
                 + .layout {
                     margin-left: 25px; flex: 0.6;
