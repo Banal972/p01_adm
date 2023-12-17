@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -8,7 +8,10 @@ import 'swiper/css';
 import "./asset/scss/Main.scss";
 import Footer from '../../component/Main/Layout/Footer';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+// 디스패치
+import { addAction } from '../../component/Manager/store/inqury';
 
 function Main() {
 
@@ -32,6 +35,14 @@ function Main() {
     setBanner(filter);
 
   },[bannerManager]);
+
+  // 문의 게시글
+  const inqury = useSelector(state=>state.inqury);
+  const [inquryData,setInquryData] = useState([]);
+  useEffect(()=>{
+    const splice = inqury.slice(0,10);
+    setInquryData(splice);
+  },[inqury]);
 
   return (
     <>
@@ -114,6 +125,7 @@ function Main() {
               <h2 className="tit">커뮤니티</h2>
 
               <div className='table'>
+
                 <div className='lbx'>
                   <div className="name">유저</div>
                   <ul>
@@ -127,52 +139,139 @@ function Main() {
                     }
                   </ul>
                 </div>
+
                 <div className='rbx'>
                   <div className="name">온라인 문의</div>
                   <ul>
                     {
-                      [0,1,2,3,4,5].map(e=>(
-                        <li key={e}>
+                      inquryData.map((e,i)=>(
+                        <li key={i}>
                           <Link to={'/'}>
-                            <h4>제목</h4>
-                            <p className='content'>내용내용내용내용내용내용내용내용내용</p>
-                            <p className='date'>2020.10.11</p>
+                            <h4>{e.writer}</h4>
+                            <p className='content'>{e.content}</p>
+                            <p className='date'>{e.wDate}</p>
                           </Link>
                         </li>
                       ))
                     }
                   </ul>
                 </div>
+
               </div>
 
             </div>
           </div>
         </section>
 
-        <form>
-          <div className="inqury">
-            <div className="_wrap" max="820">
-              <h4 className='tit'>문의하기</h4>
-
-              <label htmlFor="">성함</label>
-              <input type="text" name="name" placeholder='성함을 입력해주세요'/>
-
-              <label htmlFor="">이메일</label>
-              <input type="email" name="email" placeholder='이메일을 입력해주세요'/>
-
-              <label htmlFor="">문의내용</label>
-              <textarea name="content" placeholder='문의 내용을 입력해주세요'></textarea>
-              
-              <button type='submit'>문의</button>
-            </div>
-          </div>
-        </form>
-
+        <InquryForm/>
 
       </div>
       <Footer/>
     </>
   )
+}
+
+
+function InquryForm(){
+
+  // 디스패치
+  const dispatch = useDispatch();
+
+  // ref
+  const writer = useRef(null);
+  const email = useRef(null);
+  const content = useRef(null);
+
+  // 데이터
+  const [data,setData] = useState({
+    writer : "",
+    email : "",
+    content : ""
+  })
+
+  // 인풋
+  const inputHandler = (value,type)=>{
+    setData((prev)=>({
+      ...prev,
+      [type] : value
+    }))
+  }
+
+  // 문의하기
+  const submitHandler = (e)=>{
+    e.preventDefault();
+
+    if(data.writer == ""){
+      writer.current.focus();
+      return alert('성함을 입력해주세요');
+    }
+
+    if(data.email == ""){
+      email.current.focus();
+      return alert('이메일을 입력해주세요');
+    }
+
+    if(data.content == ""){
+      content.current.focus();
+      return alert('문의내용을 입력해주세요');
+    }
+
+    if(window.confirm('문의 하시겠습니까?')){
+      dispatch(addAction(data));
+      setData({
+        writer : "",
+        email : "",
+        content : ""
+      })
+      return alert('문의가 완료되었습니다');
+    }
+
+  }
+  
+  return (
+    <form onSubmit={submitHandler}>
+      <div className="inqury">
+        <div className="_wrap" max="820">
+          <h4 className='tit'>문의하기</h4>
+
+          <label htmlFor="writer">성함</label>
+          <input 
+            type="text" 
+            name="writer" 
+            id='writer'
+            ref={writer}
+            placeholder='성함을 입력해주세요'
+            value={data.writer}
+            onChange={(e)=>inputHandler(e.target.value,'writer')}
+          />
+
+          <label htmlFor="email">이메일</label>
+          <input 
+            type="email" 
+            name="email" 
+            id='email' 
+            ref={email}
+            placeholder='이메일을 입력해주세요'
+            value={data.email}
+            onChange={(e)=>inputHandler(e.target.value,'email')}
+          />
+
+          <label htmlFor="content">문의내용</label>
+          <textarea 
+            name="content" 
+            id='content' 
+            ref={content}
+            placeholder='문의 내용을 입력해주세요'
+            value={data.content}
+            onChange={(e)=>inputHandler(e.target.value,'content')}
+          />
+          
+          <button type='submit'>문의</button>
+        </div>
+      </div>
+    </form>
+  )
+
 }
 
 export default Main

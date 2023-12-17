@@ -23,7 +23,8 @@ export const tableManager = createSlice({
     reducers : {
         addAction(state,action){ // 테이블생성
             // seq 마지막번호부터 1씩 상승
-            const seq = state[state.length-1].seq + 1;
+            let seq = 1;
+            if(state.length > 0) seq = state[state.length-1].seq + 1;
 
             const push = {
                 seq,

@@ -61,7 +61,7 @@ function Write() {
 
         dispath(addAction(data));
         alert('회원가입 되었습니다.');
-        navigate(-1);
+        return navigate(-1);
 
       }else{
         
@@ -93,7 +93,7 @@ function Write() {
 
       dispath(updateAction(payload));
       alert('수정이 완료 되었습니다.');
-      navigate(-1);
+      return navigate(-1);
       
     }
   }

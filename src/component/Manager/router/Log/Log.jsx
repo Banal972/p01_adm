@@ -2,12 +2,18 @@ import React,{useEffect,useState} from 'react'
 import { ResponsiveBar } from '@nivo/bar'
 import { ResponsivePie } from '@nivo/pie'
 import moment from 'moment'
-import axios from 'axios'
+
+// 리덕스
+import { useSelector } from 'react-redux'
+
+// 라우터모듈
+import { useNavigate, useSearchParams } from 'react-router-dom'
+
+// 아이콘
+import {AiOutlineLeft,AiOutlineRight} from "react-icons/ai"
 
 // 컴포넌트
 import Cal from '../../compoent/Cal'
-import LayoutTable from '../../compoent/LayoutTable'
-import { useSelector } from 'react-redux'
 
 function Log() {
 
@@ -81,16 +87,83 @@ function Log() {
 // 일주일간 알려주는 게시판
 function WeekBorad({start,end}){
 
+    // 쿼리 스트링
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    // 네비게이터
+    const navigate = useNavigate();
+
+    // 유저 데이터
+    const getData = useSelector(state=>state.logManager);
+
     const [data,setData] = useState([]);
-  
-    const log = useSelector(state=>state.logManager);
-  
+
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 페이지관련 
+
+    // 현재 페이지
+    const [currentPage,setCurrentPage] = useState(1);
+
+    useEffect(()=>{
+        setCurrentPage(searchParams.get('page') || 1);
+    },[searchParams]);
+
+    // 게시물 총 갯수
+    const [total,setTotal] = useState(getData.length);
+    // 최대 게시물
+    const limit = 10; 
+    // 총 페이지
+    const [totalPage,setTotalPage] = useState(Math.ceil(total/limit)); 
+
+    // 페이징 출력
+    const [paging, setPaging] = useState([]);
+
+    // 현재 페이지 그룹의 첫번째 페이지
+    const [first,setFirst] = useState(0);
+    // 현재 페이지 그룹의 마지막 페이지
+    const [last,setLast] = useState(0);
+
+    // 이전 페이지
+    const [prev,setPrev] = useState(0);
+    // 다음 페이지
+    const [next,setNext] = useState(0);
+
+    // 페이지 생성
+    useEffect(()=>{
+
+        // 현재 페이지 그룹
+        const pageGroup = Math.ceil(currentPage / 5);
+
+        // 마지막 페이지
+        let endPage = pageGroup * 5;
+        if(endPage > totalPage) endPage = totalPage;
+        setLast(endPage);
+
+        // 시작 페이지
+        const startPage = endPage - ( 5 - 1 ) <= 0 ? 1 : endPage - (5 - 1);
+        setFirst(startPage);
+
+        // 페이징 출력
+        let pg = [];
+        for (let i = startPage; i <= endPage; i++){
+            pg.push(i);
+        }
+        setPaging(pg);
+
+        // 이전페이지 세팅
+        setPrev(startPage - 1);
+
+        // 다음페이지 세팅
+        setNext(endPage + 1);
+
+    },[currentPage, total, getData]);
+
+    // 쿼리스트링에 따른 값
     useEffect(()=>{
 
       const startDate = moment(start).format("YYYYMMDD");
       const endDate = moment(end).format("YYYYMMDD");
 
-      const filter = log.filter(e=> moment(e.wDate).format("YYYYMMDD") >= startDate && moment(e.wDate).format("YYYYMMDD") <= endDate);
+      const filter = getData.filter(e=> moment(e.wDate).format("YYYYMMDD") >= startDate && moment(e.wDate).format("YYYYMMDD") <= endDate);
 
       const groupData = {};
       filter.forEach(e=>{
@@ -109,26 +182,93 @@ function WeekBorad({start,end}){
         }
       });
 
-      setData(changeData);
-  
-    },[start,end]);
-    
-    return (
-      <></>
-    )
+      // 토탈수정
+      setTotal(changeData.length);
+      setTotalPage(Math.ceil(changeData.length/limit));
 
-    /* {<LayoutTable
-        head={[{
-          text : '날짜',
-          value : "date"
-        },{
-          text : '접속 인원',
-          value : "amount"
-        }]}
-        dataset={data}
-      /> }*/
+      const sclie = changeData.slice((currentPage - 1)*limit,limit*currentPage);
+
+      setData(sclie);
+
+  
+    },[currentPage, getData, start, end]);
+
+    return (
+      <>
+        <div className="table-grid">
+        
+          <div className="col" style={{gridTemplateColumns: "repeat(2,1fr)"}}>
+              <p>날짜</p>
+              <p>접속 인원</p>
+          </div>
+
+          {
+            data.length > 0 ?
+                data.map((e,i)=>(
+
+                    <div 
+                        className="col" 
+                        style={{gridTemplateColumns: "repeat(2,1fr)"}}
+                        key={i}
+                    >
+                        <p>{e.date}</p>
+                        <p>{e.접속인원}</p>
+                    </div>
+
+                ))
+            :
+            <p style={{textAlign : "center", padding : "20px 0", borderTop : "1px solid #EEF4F4"}}>데이터가 존재하지 않습니다</p>
+          }
+
+        </div>
+
+        <div className="paging">
+
+            {
+                prev > 0 &&
+                <button 
+                    className='prev'
+                    onClick={()=>{
+                        searchParams.set('page',prev);
+                        setSearchParams(searchParams);
+                    }}
+                >
+                    <AiOutlineLeft/>
+                </button>
+            }
+
+            {
+                paging.map(e=>(
+                    <button 
+                        className={ e == currentPage ? "act" : null} 
+                        key={e}
+                        onClick={()=>{
+                            searchParams.set('page',e);
+                            setSearchParams(searchParams);
+                        }}
+                    >{e}</button>
+                ))
+            }
+
+            {
+                last < totalPage &&
+                <button 
+                    className='next'
+                    onClick={()=>{
+                        searchParams.set('page',next);
+                        setSearchParams(searchParams);
+                    }}
+                >
+                    <AiOutlineRight/>
+                </button>
+            }
+            
+        </div>
+      </>
+    )
   
 }
+
 
 // 바 그래프
 function BarGraph({start,end}){

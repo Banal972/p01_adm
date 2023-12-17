@@ -6,12 +6,9 @@ import {MdOutlineDelete} from "react-icons/md"
 import {BiSolidWrench,BiSearch} from "react-icons/bi"
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteAction, multipleDeleteAction } from '../../store/table'
+import { deleteAction, multipleDeleteAction } from '../../store/inqury'
 
 export default function List() {
-
-    // 파라미터
-    const {table} = useParams();
 
     // 쿼리 스트링
     const [searchParams, setSearchParams] = useSearchParams();
@@ -105,7 +102,7 @@ export default function List() {
 
         const filter = getData.filter(e=>{
             if(type == ""){
-                return e['writer'].includes(search);
+                return e['writer'].includes(search) || e['content'].includes(search);
             }else{
                 if(typeof e[type] == "string"){
                     return e[type].includes(search)
@@ -169,8 +166,8 @@ export default function List() {
             <div className="layout top">
                 <select className="lay-select" name='selector'>
                     <option value="">전체</option>
-                    <option value="title">제목</option>
                     <option value="content">내용</option>
+                    <option value="writer">작성자</option>
                 </select>
                 <label htmlFor="search" className="lay-search compo-lay">
                     <div className="icon"><BiSearch/></div>
@@ -315,7 +312,6 @@ export default function List() {
                         }
                     }}
                 >선택 삭제</Button>
-                <Button onClick={()=>navigate('write')}>등록</Button>
             </div>
 
         </div>

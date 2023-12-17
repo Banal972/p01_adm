@@ -1,6 +1,5 @@
-import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from "../../asset/image/logo.svg";
 import { BsCheck } from "react-icons/bs"
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +14,14 @@ function Login() {
     // selector
     const member = useSelector(state => state.member);
     const dispath = useDispatch();
+
+    const loginMember = useSelector(state => state.loginMember);
+    useEffect(()=>{
+        if(loginMember){
+            alert('이미 로그인이 되어있습니다.');
+            return navigate('main');
+        }
+    },[]);
 
     // 인풋State
     const [inputID,setInputID] = useState('');
