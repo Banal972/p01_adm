@@ -5,8 +5,6 @@ import {useNavigate, useParams} from "react-router-dom"
 import moment from "moment";
 
 import { useDispatch, useSelector } from "react-redux";
-import { EditorState, convertToRaw } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
 
 import {BsDownload} from "react-icons/bs"
 import {FiCalendar} from "react-icons/fi"
@@ -17,7 +15,7 @@ import Button from "../../compoent/Button";
 // 캘린더
 import Calendar from "react-calendar";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { addAction } from "../../store/board";
+import { addAction, updatedAction } from "../../store/board";
 
 
 function Write() {
@@ -44,6 +42,25 @@ function Write() {
   });
 
   const tableManager = useSelector(state=>state.tableManager);
+  const boardManager = useSelector(state=>state.boardManager);
+
+  useEffect(()=>{
+
+    if(seq){
+      const boardName = boardManager.filter(e=>e.board_table == table)[0];
+      if(boardName){
+        const getData = boardName.data.filter(e=>e.seq == seq)[0];
+        setInputData((prev)=>({
+          ...prev,
+          title : getData.title,
+          content : getData.content,
+          imgURL : getData.imgURL,
+          writer : getData.writer,
+        }))
+      }
+    }
+
+  },[seq,table]);
 
   const [imgOpen,setImgOpen] = useState(false);
   useEffect(()=>{
@@ -66,12 +83,13 @@ function Write() {
 
   const updateHandler = ()=>{
     const pushData = {
-        seq : Number(seq),
-        ...inputData
+        seq : seq,
+        table : table,
+        data : {...inputData}
     }
     if(window.confirm('수정 하시겠습니까?')){
         
-        // dispath(updatedAction(pushData));
+        dispath(updatedAction(pushData));
         alert('수정이 완료되었습니다')
         return navigate(-1);
 

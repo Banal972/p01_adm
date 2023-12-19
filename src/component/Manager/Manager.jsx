@@ -99,7 +99,10 @@ function Manager() {
             
             <Route path=':table'>
               <Route index element = {<TableList/>} />
-              <Route path='write' element={<TableWrite/>}/>
+              <Route path='write'>
+                <Route index element={<TableWrite/>}/>
+                <Route path=':seq' element={<TableWrite/>}/>
+              </Route>
             </Route>
 
           </Route>

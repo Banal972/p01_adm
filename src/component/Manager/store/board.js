@@ -57,25 +57,38 @@ export const boardManager = createSlice({
         },
         addAction(state,action){
 
-            const rs = state.findIndex(e=>e.board_table == action.payload.table);
+            const {table,data} = action.payload
 
-            if(rs > -1){
+            const table_index = state.findIndex(e=>e.board_table == table);
+
+            if(table_index > -1){
                 let seq = 1;
-                if(state[rs].data.length > 0){
-                    seq = state[rs].data[state[rs].data.length - 1].seq + 1;
+                if(state[table_index].data.length > 0){
+                    seq = state[table_index].data[state[table_index].data.length - 1].seq + 1;
                 }
                 const push = {
                     seq,
-
+                    ...data
                 }
-                state[rs].data.push(action.payload.data)
+                state[table_index].data.push(push)
             }
 
         },
         updatedAction(state,action){
-            const rs = state.findIndex(e=>e.seq == action.payload.seq);
-            if(rs > -1){
-                state[rs] = action.payload;
+
+            const {seq,table,data} = action.payload
+
+            const ta_index = state.findIndex(e=>e.board_table == table);
+            if(ta_index > -1){
+
+                const rs = state[ta_index].data.findIndex(e=>e.seq == seq);
+                if(rs > -1){
+                    state[ta_index].data[rs] = {
+                        seq : parseInt(seq),
+                        ...data
+                    };
+                }
+                
             }
         },
         deleteAction(state,action){
@@ -112,6 +125,6 @@ export const boardManager = createSlice({
     }
 });
 
-export const {addBoard,addAction,deleteAction,multipleDeleteAction} = boardManager.actions;
+export const {addBoard,addAction,updatedAction,deleteAction,multipleDeleteAction} = boardManager.actions;
 
 export default boardManager.reducer;
