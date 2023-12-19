@@ -1,11 +1,9 @@
 import React,{useEffect,useState} from 'react'
 import {ResponsiveBar} from "@nivo/bar"
-import axios from "axios"
 import moment from "moment"
 
 // 컴포넌트
 import Cal from '../../compoent/Cal'
-import MainTable from '../../compoent/MainTable'
 import { useSelector } from 'react-redux'
 
 function Main() {
@@ -176,6 +174,63 @@ function Main() {
 
     </div>
   )
+}
+
+function MainTable({tit,table}){
+
+  const [dataset,setDataset] = useState([]);
+  const [news,setNews] = useState([]);
+
+  const boardManager = useSelector(state=>state.boardManager);
+
+  useEffect(()=>{
+    
+    const filter = boardManager.filter(e=>e.board_table == table)[0].data;
+
+    const newData = filter[filter.length - 1];
+    const slice = filter.slice(0,filter.length - 1);
+
+    setNews(newData);
+    setDataset(slice);
+
+  },[table]);
+
+  return(
+    <div className="lay">
+            
+      <p className="tit">{tit}</p>
+
+      <div className="layout dash-t">
+
+          {
+              dataset.length > 0 ?
+              <>
+                  <ul className='new'>
+                      <li>
+                          <div className="new">신규</div>
+                          <p>{news.title}</p>
+                      </li>
+                  </ul>
+
+                  <ul className='table'>
+                      {dataset.map((e,i)=>(
+                          <li key={i}>
+                              <p className='write'>{e.writer}</p>
+                              <p className='desc'>{e.title}</p>
+                              <span className="date">{e.wDate}</span>
+                          </li>
+                      ))}
+                  </ul>
+              </>
+              :
+              <>데이터가 존재하지 않습니다.</>
+          }
+
+      </div>
+
+    </div>
+  )
+
 }
 
 export default Main

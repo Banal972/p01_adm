@@ -80,8 +80,9 @@ function Manager() {
 
           <Route path='banner'>
             <Route index element={<BannerList/>}/>
-            <Route path='write' element={<BannerWrtie/>}>
-              <Route path=':seq'/>
+            <Route path='write'>
+              <Route index element={<BannerWrtie/>}/>
+              <Route path=':seq' element={<BannerWrtie/>}/>
             </Route>
           </Route>
 
@@ -99,7 +100,10 @@ function Manager() {
             
             <Route path=':table'>
               <Route index element = {<TableList/>} />
-              <Route path='write' element={<TableWrite/>}/>
+              <Route path='write'>
+                <Route index element={<TableWrite/>}/>
+                <Route path=':seq' element={<TableWrite/>}/>
+              </Route>
             </Route>
 
           </Route>
