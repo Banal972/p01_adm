@@ -38,8 +38,11 @@ function Main() {
     const slice = boardManager.slice(0,2);
 
     //테이블매니저랑 비교해서 이름 가져오기
-    const getName = tableManager.filter((e,i)=>e.board_table == slice[i].board_table);
-    
+    const getName = tableManager.filter((e,i)=>{
+      console.log(e.board_table == slice[i]?.board_table);
+      return e.board_table == slice[i]?.board_table;
+    });
+
     // 2개 조합
     const newObject = [];
     getName.forEach((e,i)=>{
@@ -119,7 +122,7 @@ function Main() {
 
                 {
                   boardSlice.map((e,i)=>(
-                    <div className={i == 0 ? "lbx" : "rbx"}>
+                    <div className={i == 0 ? "lbx" : "rbx"} key={i}>
                       <div className="name">{e.name}</div>
                       <ul>
                         {
@@ -298,3 +301,4 @@ function InquryForm(){
 }
 
 export default Main
+
