@@ -13,6 +13,7 @@ import moment from "moment";
 
 // 컴포넌트
 import Button from "../../compoent/Button";
+import { addBoard } from "../../store/board";
 
 function Write() {
   
@@ -123,8 +124,6 @@ function Write() {
 
         if(window.confirm('수정 하시겠습니까?')){
 
-            const seq = Number(seq);
-
             const push = {
                 seq,
                 ...inputData
@@ -141,10 +140,28 @@ function Write() {
     // 등록
     const submitHandler = ()=>{
 
+        const filter = tableManager.filter(e=>e.board_table == inputData.board_table)
+
+        if(filter.length > 0){
+            setInputData((prev)=>(
+                {
+                    ...prev,
+                    board_table : ""
+                }
+            ))
+           return alert('이미 등록되어있는 테이블 이름 입니다.')
+        }
+
         if(window.confirm('등록 하시겠습니까?')){
 
-            dispatch(addAction(inputData));
-            return navigate(-1);
+            try {
+                dispatch(addAction(inputData));
+                dispatch(addBoard(inputData.board_table));
+                return navigate(-1);
+            }
+            catch(e){
+                alert('에러가 발생했습니다');
+            }
 
         }
 

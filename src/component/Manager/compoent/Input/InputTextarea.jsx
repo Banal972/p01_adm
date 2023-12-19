@@ -10,11 +10,8 @@ function InputTextarea(){
 
         return new Promise(
             (resolve,reject) => {
-                
                 const imgURL = URL.createObjectURL(file)
-
                 resolve({data : { link : imgURL }});
-                
             }
         )
 

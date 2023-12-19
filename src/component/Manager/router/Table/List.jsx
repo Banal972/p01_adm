@@ -6,7 +6,7 @@ import {MdOutlineDelete} from "react-icons/md"
 import {BiSolidWrench,BiSearch} from "react-icons/bi"
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteAction, multipleDeleteAction } from '../../store/table'
+import { deleteAction, multipleDeleteAction } from '../../store/board'
 
 export default function List() {
 
@@ -34,9 +34,34 @@ export default function List() {
 
     // 삭제 페이지
     const deleteHandler = (e)=>{
-        dispatch(deleteAction(e));
+        const push = {
+            table,
+            seq : e,
+        }
+        dispatch(deleteAction(push));
         alert('삭제가 완료 되었습니다.');
     }
+
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 이미지 게시판인지 아닌지
+
+    const tableManager = useSelector(state=>state.tableManager);
+
+    const [img,setImg] = useState(false);
+
+    useEffect(()=>{
+        const filter = tableManager.filter(e=>e.board_table == table);
+
+        if(filter.length > 0){
+
+            if(filter[0].img == "Y"){
+                setImg(true);
+            } else{
+                setImg(false);
+            }
+
+        }
+
+    },[table]);
 
     // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 페이지관련 
 
@@ -185,7 +210,7 @@ export default function List() {
 
             <div className="table-grid">
         
-                <div className="col" style={{gridTemplateColumns: "50px 120px 200px repeat(3,1fr) 150px"}}>
+                <div className="col" style={{gridTemplateColumns: `50px 120px 200px repeat(${img ? "3" : "2"},1fr) 150px`}}>
 
                     <label htmlFor="allchk" className='table-check'>
                         <input 
@@ -203,7 +228,9 @@ export default function List() {
                         <div><BsCheck/></div>
                     </label>
                     <p>번호</p>
-                    <p>이미지</p>
+                    {
+                        img && <p>이미지</p>
+                    }
                     <p>제목</p>
                     <p>내용</p>
                     <p>작성자</p>
@@ -217,7 +244,7 @@ export default function List() {
 
                             <div 
                                 className="col" 
-                                style={{gridTemplateColumns: "50px 120px 200px repeat(3,1fr) 150px"}}
+                                style={{gridTemplateColumns: `50px 120px 200px repeat(${img ? "3" : "2"},1fr) 150px`}}
                                 key={i}
                             >
 
@@ -233,7 +260,10 @@ export default function List() {
 
                                 <p>{(i+1) + (limit * (currentPage - 1))}</p>
 
-                                <img src="https://picsum.photos/200/300" alt="" />
+                                {
+                                    img &&
+                                    <img src={e.imgURL} alt="" />
+                                }
 
                                 <Link to={`view/${e.seq}`}>{e.title}</Link>
 
@@ -309,7 +339,11 @@ export default function List() {
                     color={"color02"}
                     onClick={()=>{
                         if(window.confirm('삭제 하시겠습니까?')){
-                          dispatch(multipleDeleteAction(chkItem));
+                            const push = {
+                                seq : chkItem,
+                                table
+                            }
+                          dispatch(multipleDeleteAction(push));
                           if( searchParams.get('page') >= totalPage){
                               searchParams.set('page',last-1);
                               setSearchParams(searchParams);
