@@ -39,7 +39,6 @@ function Main() {
 
     //테이블매니저랑 비교해서 이름 가져오기
     const getName = tableManager.filter((e,i)=>{
-      console.log(e.board_table == slice[i]?.board_table);
       return e.board_table == slice[i]?.board_table;
     });
 

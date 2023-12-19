@@ -39,7 +39,7 @@ function Write() {
         imgURL : "",
         writer : "",
         main : "N",
-        wtDate : new Date(),
+        wtDate : moment(new Date()).format("YYYY-MM-DD"),
     });
 
     // 캘린더 출력
