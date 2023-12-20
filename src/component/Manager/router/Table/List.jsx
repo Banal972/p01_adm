@@ -125,7 +125,12 @@ export default function List() {
     // 쿼리스트링에 따른 값
     useEffect(()=>{
         
-        const tableData = getData.filter(e=>e.board_table == table)[0].data;
+        const tableData = getData.filter(e=>e.board_table == table)[0]?.data;
+
+        if(!tableData){
+            alert('오류가 발생했습니다.');
+            return navigate(-1);
+        }
 
         const type = searchParams.get('type') || "";
         const search = searchParams.get('search') || "";

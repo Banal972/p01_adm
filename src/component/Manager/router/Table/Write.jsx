@@ -65,8 +65,18 @@ function Write() {
   const [imgOpen,setImgOpen] = useState(false);
   useEffect(()=>{
     const filter = tableManager.filter(e=>e.board_table == table);
+
+    if(filter.length <= 0){
+      alert('오류가 발생했습니다.');
+      return navigate('/manager/board');
+    }
+
     if(filter){
-      if(filter[0].img == 'Y') setImgOpen(true);
+      if(filter[0].img == 'Y'){
+        setImgOpen(true);
+      }else{
+        setImgOpen(false);
+      }
     }
   },[table]);
 

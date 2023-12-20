@@ -57,7 +57,7 @@
 // 작업 페이지
 .manger-main {
 
-    display: flex;
+    display: flex;  min-width: 1280px;
 
     .back-box {
         flex: 1; background: #EEF4F4; box-sizing: border-box; padding: 25px; min-width: 0;
@@ -152,7 +152,6 @@
 
     }
     
-
 
     // 기본 레이아웃
     .layout {
@@ -360,6 +359,33 @@
     }
 
 
+    /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 뷰페이지 관련 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+
+    .view-lay01 {
+
+        p {
+            margin-bottom: 5px;
+        }
+        
+        .box {
+            border: 2px solid #EEF4F4; height: 40px; box-sizing: border-box; padding: 0 1em; border-radius: 10px; display: flex; align-items: center;
+        }
+
+        .cal-box {
+            position: relative;
+            display: flex; height: 40px; border: 2px solid #EEF4F4; font-size: 16px; border-radius: 10px; margin-top: 10px; font-size: 14px; box-sizing: border-box; align-items: center; padding: 0 1em;
+            svg {
+                position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+            }
+        }
+
+        + .view-lay01 {
+            margin-top: 25px;
+        }
+
+    }
+
+
 
 
 
@@ -522,3 +548,6 @@
     }
 
 }
+
+
+

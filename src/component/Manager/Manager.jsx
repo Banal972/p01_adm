@@ -18,6 +18,7 @@ import Main from './router/Main/Main'
 import UserWrite from "./router/User/Write"
 import BoardWrite from "./router/Board/Write"
 import Login from './router/Login/Login'
+import View from './router/Share/View'
 
 // auth 라우터
 import Auth from './auth/Auth'
@@ -84,6 +85,7 @@ function Manager() {
               <Route index element={<BannerWrtie/>}/>
               <Route path=':seq' element={<BannerWrtie/>}/>
             </Route>
+            <Route path='view/:seq' element={<View api={'bannerManager'}/>}/>
           </Route>
 
           {/* 게시판 관리 */}
@@ -96,7 +98,7 @@ function Manager() {
               <Route path=':seq' element={<BoardWrite/>}/>
             </Route>
 
-            <Route path='view' element={<>뷰 페이지</>}/>
+            <Route path='view/:seq' element={<View api={'tableManager'}/>}/>
             
             <Route path=':table'>
               <Route index element = {<TableList/>} />
@@ -104,6 +106,10 @@ function Manager() {
                 <Route index element={<TableWrite/>}/>
                 <Route path=':seq' element={<TableWrite/>}/>
               </Route>
+              <Route 
+                path='view/:seq' 
+                element={<View api={'boardManager'} board={true} />} 
+              />
             </Route>
 
           </Route>
@@ -118,7 +124,7 @@ function Manager() {
               <Route path=':id' element={<UserWrite/>}/>
             </Route>
 
-            <Route path='view' element={<>뷰 페이지</>}/>
+            <Route path='view/:seq' element={<View api={'member'}/>}/>
 
           </Route>
 
@@ -128,6 +134,10 @@ function Manager() {
             <Route path='write'>
               <Route path=':seq' element={<InquryWrite/>}></Route>
             </Route>
+            <Route 
+              path='view/:seq' 
+              element={<View api={'inqury'}/>}
+            />
           </Route>
 
           {/* 접속 현황 */}

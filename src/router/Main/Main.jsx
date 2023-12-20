@@ -67,7 +67,8 @@ function Main() {
   const member = useSelector(state=>state.member);
   const [memberData,setMemberData] = useState([]);
   useEffect(()=>{
-    const splice = member.slice(0,5);
+    const filter = member.filter(e=>e.rank < 10);
+    const splice = filter.slice(0,5);
     setMemberData(splice);
   },[member]);
 
@@ -120,24 +121,25 @@ function Main() {
               <div className='table'>
 
                 {
-                  boardSlice.map((e,i)=>(
-                    <div className={i == 0 ? "lbx" : "rbx"} key={i}>
-                      <div className="name">{e.name}</div>
-                      <ul>
-                        {
-                          e.data.map((a,i)=>(
-                            <li key={i}>
-                              <Link to={'/'}>
+                  boardSlice.length > 0 ?
+                    boardSlice.map((e,i)=>(
+                      <div className={i == 0 ? "lbx" : "rbx"} key={i}>
+                        <div className="name">{e.name}</div>
+                        <ul>
+                          {
+                            e.data.map((a,i)=>(
+                              <li key={i}>
                                 <h4>{a.title}</h4>
                                 <p className='content'>{a.content}</p>
                                 <p className='date'>{a.wDate}</p>
-                              </Link>
-                            </li>
-                          ))
-                        }
-                      </ul>
-                    </div>
-                  ))
+                              </li>
+                            ))
+                          }
+                        </ul>
+                      </div>
+                    ))
+                    :
+                    <p style={{textAlign : 'center', flex : 1}}>등록된 게시판이 없습니다.</p>
                 }
                 
               </div>
@@ -155,12 +157,15 @@ function Main() {
                   <div className="name">유저</div>
                   <ul>
                     {
-                      memberData.map((e,i)=>(
-                        <li key={i}>
-                          <h4>{e.userID}</h4>
-                          <p className='date'>{e.wtDate}</p>
-                        </li>
-                      ))
+                      memberData.length > 0 ?
+                        memberData.map((e,i)=>(
+                          <li key={i}>
+                            <h4>{e.userID}</h4>
+                            <p className='date'>{e.wtDate}</p>
+                          </li>
+                        ))
+                      :
+                      <li>데이터가 존재하지 않습니다</li>
                     }
                   </ul>
                 </div>
@@ -169,15 +174,16 @@ function Main() {
                   <div className="name">온라인 문의</div>
                   <ul>
                     {
+                      inquryData.length > 0 ?
                       inquryData.map((e,i)=>(
                         <li key={i}>
-                          <Link to={'/'}>
-                            <h4>{e.writer}</h4>
-                            <p className='content'>{e.content}</p>
-                            <p className='date'>{e.wDate}</p>
-                          </Link>
+                          <h4>{e.writer}</h4>
+                          <p className='content'>{e.content}</p>
+                          <p className='date'>{e.wDate}</p>
                         </li>
                       ))
+                      :
+                      <li>데이터가 존재하지 않습니다.</li>
                     }
                   </ul>
                 </div>

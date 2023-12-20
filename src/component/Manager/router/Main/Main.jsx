@@ -179,7 +179,7 @@ function Main() {
 function MainTable({tit,table}){
 
   const [dataset,setDataset] = useState([]);
-  const [news,setNews] = useState([]);
+  const [news,setNews] = useState(null);
 
   const boardManager = useSelector(state=>state.boardManager);
 
@@ -193,7 +193,7 @@ function MainTable({tit,table}){
     setNews(newData);
     setDataset(slice);
 
-  },[table]);
+  },[table,boardManager]);
 
   return(
     <div className="lay">
@@ -203,24 +203,23 @@ function MainTable({tit,table}){
       <div className="layout dash-t">
 
           {
-              dataset.length > 0 ?
+              dataset.length > 0 || news ?
               <>
-                  <ul className='new'>
-                      <li>
-                          <div className="new">신규</div>
-                          <p>{news.title}</p>
-                      </li>
-                  </ul>
-
-                  <ul className='table'>
-                      {dataset.map((e,i)=>(
-                          <li key={i}>
-                              <p className='write'>{e.writer}</p>
-                              <p className='desc'>{e.title}</p>
-                              <span className="date">{e.wDate}</span>
-                          </li>
-                      ))}
-                  </ul>
+                <ul className='new'>
+                  <li>
+                    <div className="new">신규</div>
+                    <p>{news.title}</p>
+                  </li>
+                </ul>
+                <ul className='table'>
+                    {dataset.map((e,i)=>(
+                        <li key={i}>
+                            <p className='write'>{e.writer}</p>
+                            <p className='desc'>{e.title}</p>
+                            <span className="date">{e.wDate}</span>
+                        </li>
+                    ))}
+                </ul>
               </>
               :
               <>데이터가 존재하지 않습니다.</>
