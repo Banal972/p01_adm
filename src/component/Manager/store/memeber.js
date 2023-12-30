@@ -6,14 +6,6 @@ export const memeber = createSlice({
     initialState : [
         {
             seq : 1,
-            userID : 'test',
-            userPW : "xptmxmdlqslek123",
-            nickName : "테스트 계정",
-            rank : 5,
-            wtDate : moment(new Date()).format("YYYY-MM-DD"),
-        },
-        {
-            seq : 2,
             userID : 'admin01',
             userPW : "a123456",
             nickName : "어드민",
