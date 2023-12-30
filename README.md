@@ -37,7 +37,7 @@ Redux를 사용하여 State 를 관리하고 있으며 새로고침할 시 데�
  지나거나 오래될경우 출력이 되지 않을수 있습니다**
 
 배포 버전은\
-[바로가기](https://banal972.github.io/p01) 에서 확인 가능합니다.
+[바로가기](https://banal972.github.io/p01_adm) 에서 확인 가능합니다.
 
 개발 버전은
 ### `npm start`
