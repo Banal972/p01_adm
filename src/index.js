@@ -21,7 +21,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode></React.StrictMode>
   <CookiesProvider> {/*쿠키*/}
-    <BrowserRouter> {/*라우터*/}
+    <BrowserRouter basename={process.env.PUBLIC_URL}> {/*라우터*/}
       <Provider store={store}> {/*리덕스*/}
         <App />
       </Provider>
