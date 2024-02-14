@@ -11,6 +11,22 @@ export const memeber = createSlice({
             nickName : "어드민",
             rank : 10,
             wtDate : moment(new Date()).format("YYYY-MM-DD"),
+        },
+        {
+            seq : 2,
+            userID : 'user',
+            userPW : "a123456",
+            nickName : "유저",
+            rank : 1,
+            wtDate : moment(new Date()).format("YYYY-MM-DD"),
+        },
+        {
+            seq : 3,
+            userID : 'test',
+            userPW : "a123456",
+            nickName : "테스트",
+            rank : 1,
+            wtDate : moment(new Date()).format("YYYY-MM-DD"),
         }
     ],
     reducers : {

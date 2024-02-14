@@ -49,7 +49,7 @@ function Menu() {
                 <Link to={'main'} className={loca === "/" ? "act" : "" } ><div className="icon"><BiHomeAlt/></div> 대시보드</Link>
             </li>
             <li>
-                <Link className={loca === "user" ? "act" : "" } to={"banner"}><div className="icon"><AiOutlinePicture  /></div> 배너 관리</Link>
+                <Link className={loca === "banner" ? "act" : "" } to={"banner"}><div className="icon"><AiOutlinePicture  /></div> 배너 관리</Link>
             </li>
             <li>
                 <Link className={loca === "board" ? "act" : "" } to={'board'}><div className="icon"><BiSolidChat/></div> 게시판 관리</Link>

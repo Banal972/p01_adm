@@ -11,7 +11,7 @@ function Auth({children}) {
 
         if(loginUser.rank < 10){
             alert("관리자가 아닙니다.");
-            return <Navigate to={'/manager'} />
+            return <Navigate to={'/'} />
         }else{
 
             return (
@@ -24,7 +24,7 @@ function Auth({children}) {
 
     }else{
         alert("비정상적인 접속입니다.");
-        return <Navigate to={'/manager'} />
+        return <Navigate to={'/'} />
     }
     
 }

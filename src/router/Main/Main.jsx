@@ -84,7 +84,7 @@ function Main() {
     <>
 
       <div className="go_admin" onClick={()=>{
-        navigate('/manager');
+        navigate('/');
       }}>
         <p>관리자로 <br/>가기</p>
       </div>

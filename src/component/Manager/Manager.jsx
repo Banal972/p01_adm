@@ -49,12 +49,6 @@ function Manager() {
   return (
     <>
 
-      <div className="go_admin" onClick={()=>{
-        navigate('/');
-      }}>
-        <p>메인<br/> 페이지 로<br/> 가기</p>
-      </div>
-
       <Routes>
 
         <Route index element={<Login/>}/>
@@ -63,6 +57,11 @@ function Manager() {
 
           <Auth>
             <>
+            <div className="go_admin" onClick={()=>{
+              navigate('/complete');
+            }}>
+              <p>사용자 페이지 확인하기</p>
+            </div>
               <Header/>
               <div className="manger-main">
                 <Menu/>

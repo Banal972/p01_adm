@@ -4,7 +4,7 @@ import moment from "moment";
 export const boardManager = createSlice({
     name : "boardManager",
     initialState : [
-        /* {
+        {
             board_table : "board_one",
             data : [
                 {
@@ -24,7 +24,7 @@ export const boardManager = createSlice({
                     wDate : moment(new Date()).format("YYYY-MM-DD")
                 }
             ]
-        }, */
+        },
     ],
     reducers : {
         addBoard(state,action){

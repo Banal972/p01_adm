@@ -4,7 +4,7 @@ import moment from "moment";
 export const tableManager = createSlice({
     name : "tableManager",
     initialState : [
-        /* {
+        {
             seq : 1,
             board_name : "게시판 1", // 게시판 이름
             board_table : "board_one", // 테이블 이름
@@ -12,7 +12,7 @@ export const tableManager = createSlice({
             img : 'Y', // 이미지 가능
             writer : '어드민',
             wData : moment(new Date()).format('YYYY-MM-DD')
-        }, */
+        },
     ],
     reducers : {
         addAction(state,action){ // 테이블생성

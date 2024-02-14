@@ -4,15 +4,15 @@ import moment from "moment";
 export const bannerManager = createSlice({
     name : "bannerManager",
     initialState : [
-        /* {
+        {
             seq : 1,
             title : "배너1",
             content : "배너의 내용입니다",
-            imgURL : "https://picsum.photos/200/300",
+            imgURL : "https://picsum.photos/1920/1080",
             main : "Y",
             writer : "어드민",
             wtDate : moment(new Date()).format("YYYY-MM-DD")
-        }, */
+        },
     ],
     reducers : {
         addAction(state,action){

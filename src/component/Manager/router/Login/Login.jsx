@@ -24,8 +24,8 @@ function Login() {
     },[]);
 
     // 인풋State
-    const [inputID,setInputID] = useState('');
-    const [inputPW,setInputPW] = useState('');
+    const [inputID,setInputID] = useState('admin01');
+    const [inputPW,setInputPW] = useState('a123456');
 
     // 인풋ref
     const inputRef = useRef(null);

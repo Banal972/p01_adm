@@ -7,9 +7,9 @@ function App() {
     <div className="App">
       <Routes>
 
-        <Route path="/" element={<Main/>}/>
+        <Route path="/*" element={<Manager/>}/>
 
-        <Route path="/manager/*" element={<Manager/>}/>
+        <Route path="complete" element={<Main/>}/>
 
       </Routes>
 

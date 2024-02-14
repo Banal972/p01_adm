@@ -32,7 +32,7 @@ function Header() {
                         onClick={()=>{
                             dispatch(logout());
                             alert('로그아웃이 되었습니다.');
-                            navigate('/manager');
+                            navigate('/');
                         }}
                     >
                         로그아웃
